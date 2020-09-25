@@ -1,0 +1,14 @@
+Z80 Assembler Video Series
+
+-- Coffeescript (an alternative Javascript syntax)
+-- command line
+-- Node.js
+	-- "node -v"
+	-- how to install Node.js (Window, Mac OS, and Linux)
+	-- Windows
+		-- bash for Windows (search YouTube on how to install)
+
+-- editor
+	-- Sublime $$$ (unregistered)
+	-- Visual Studio Code (free), supported Microsoft
+	-- Notepad, Textedit, gEdit
