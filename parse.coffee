@@ -79,8 +79,8 @@ addParseFields = ->
 
 
 parseTestIn = ->
-	regAr = ['AF', 'BC', 'DE', 'HL', 'AF$', 'BC$', 'DE$', 'HL$', 'IX', 'IY', 'SP', 'PC']
-	reg2Ar = ['I', 'R', 'IFF1', 'IFF2', 'IM', 'halted', 'tstates']
+	regAr = ['af', 'bc', 'de', 'hl', 'af$', 'bc$', 'de$', 'hl$', 'ix', 'iy', 'sp', 'pc']
+	reg2Ar = ['i', 'r', 'iff1', 'iff2', 'im', 'halted', 'tstates']
 
 	# <arbitrary test description>
 	# 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
@@ -105,6 +105,7 @@ parseTestIn = ->
 			description: line
 			machineState: {}
 			memory: {}
+			opcode: line[0...2]
 
 		line2 = lineAr[index+1]
 		line3 = lineAr[index+2]
@@ -138,12 +139,12 @@ parseTestIn = ->
 	str = JSON.stringify testInAr
 	fs.writeFileSync './data/testin.json', str, 'utf-8'
 
-# parseTestIn()
+parseTestIn()
 
 
 parseTestOut = ->
-	regAr = ['AF', 'BC', 'DE', 'HL', 'AF$', 'BC$', 'DE$', 'HL$', 'IX', 'IY', 'SP', 'PC']
-	reg2Ar = ['I', 'R', 'IFF1', 'IFF2', 'IM', 'halted', 'tstates']
+	regAr = ['af', 'bc', 'de', 'hl', 'af$', 'bc$', 'de$', 'hl$', 'ix', 'iy', 'sp', 'pc']
+	reg2Ar = ['i', 'r', 'iff1', 'iff2', 'im', 'halted', 'tstates']
 
 	# <arbitrary test description>
 	# 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
