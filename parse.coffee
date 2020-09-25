@@ -114,8 +114,8 @@ parseTestIn = ->
 
 		newobj =
 			description: line
-			machineState:
-				memory: {}
+			machineState: {}
+			memory: {}
 
 		line2 = lineAr[index+1]
 		line3 = lineAr[index+2]
@@ -140,7 +140,7 @@ parseTestIn = ->
 			addr = parseInt ar[0], 16
 			for item, memindex in ar[1... ]
 				if item isnt '-1'
-					newobj.machineState.memory[addr + memindex] = parseInt item, 16
+					newobj.memory[addr + memindex] = parseInt item, 16
 				else
 					break
 			index += 1
@@ -149,7 +149,7 @@ parseTestIn = ->
 	str = JSON.stringify testInAr
 	fs.writeFileSync './data/testin.json', str, 'utf-8'
 
-parseTestIn()
+# parseTestIn()
 
 
 parseTestOut = ->
