@@ -2,6 +2,7 @@
 
 fs = require 'fs'
 _ = require 'lodash'
+em = require './emulator'
 
 
 ###*
@@ -25,7 +26,10 @@ testoutAr = JSON.parse fs.readFileSync './data/testout.json', 'utf-8'
 for item, index in testinAr
 	item.index = index
 
-diffObj = objdiff testoutAr[0].machineState, testinAr[0].machineState
+{ machineState, memory, index } = testinAr[0]
+em.runOpcode machineState
+
+diffObj = objdiff testoutAr[index].machineState, machineState
 delete diffObj.R
 delete diffObj.tstates
 
