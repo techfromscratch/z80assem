@@ -16,5 +16,8 @@
   },
   "homepage": "https://github.com/techfromscratch/z80assem#readme",
   "keywords": [],
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "lodash": "^4.17.20"
+  }
 }

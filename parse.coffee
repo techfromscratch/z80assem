@@ -1,11 +1,7 @@
 # parse the opcode file and save the data
 
 fs = require 'fs'
-content = fs.readFileSync './data/opcodes.html', 'utf-8'
-
-console.log 'length:', content.length
-
-hexAr = ['', '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F']
+_ = require 'lodash'
 
 getBetween = (fullstr, start, end) ->
 	temp = fullstr.split(start)[1]
@@ -15,71 +11,79 @@ getBetween = (fullstr, start, end) ->
 contains = (str, search) ->
 	return str.indexOf(search) > -1
 
-content = getBetween content, 'table1', '</table>'
+splitTrimNoNull = (origstr, splitstr) ->
+	ar = origstr.split splitstr
+	newar = []
+	for item in ar
+		item = _.trim item
+		if item
+			newar.push item
+	return newar
 
-console.log content[0... 100]
-console.log '-----'
-console.log content[-100 ... ]
+parseHTML = ->
+	content = fs.readFileSync './data/opcodes.html', 'utf-8'
+	hexAr = ['', '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F']
+	content = getBetween content, 'table1', '</table>'
 
-# content now contains the parts that we're interested in
+	console.log content[0... 100]
+	console.log '-----'
+	console.log content[-100 ... ]
 
-console.log 'new length:', content.length
+	# content now contains the parts that we're interested in
 
-rowAr = content.split '<tr'
-console.log 'rowAr length', rowAr.length
+	console.log 'new length:', content.length
 
-allOperands = []
+	rowAr = content.split '<tr'
+	console.log 'rowAr length', rowAr.length
 
-for row in rowAr
-	if not contains row, 'axis'
-		continue
-	rowOpcode = getBetween row, '<th>', '</th>'
-	tdAr = row.split '<td'
+	allOperands = []
 
-	# console.log tdAr
-	for cell, index in tdAr
-		if not contains cell, 'axis'
+	for row in rowAr
+		if not contains row, 'axis'
 			continue
-		cellstr = getBetween cell, 'axis="', '">'
-		mnemonic = getBetween cell, '">', '</td>'
-		opcode = rowOpcode + hexAr[index]
-		fields = cellstr.split '|'
+		rowOpcode = getBetween row, '<th>', '</th>'
+		tdAr = row.split '<td'
 
-		# console.log opcode, mnemonic, fields
-		newobj = {
-			"opcode": opcode
-			"mnemonic": mnemonic
-			flags: fields[0]
-			numbytes: parseInt fields[1]
-			cycles: fields[2]
-			description: fields[3]
-		}
-		allOperands.push newobj
+		# console.log tdAr
+		for cell, index in tdAr
+			if not contains cell, 'axis'
+				continue
+			cellstr = getBetween cell, 'axis="', '">'
+			mnemonic = getBetween cell, '">', '</td>'
+			opcode = rowOpcode + hexAr[index]
+			fields = cellstr.split '|'
 
-# console.log allOperands
+			# console.log opcode, mnemonic, fields
+			newobj = {
+				"opcode": opcode
+				"mnemonic": mnemonic
+				flags: fields[0]
+				numbytes: parseInt fields[1]
+				cycles: fields[2]
+				description: fields[3]
+			}
+			allOperands.push newobj
 
-filecontents = JSON.stringify allOperands
-fs.writeFileSync './data/opcodes.json', filecontents, 'utf-8'
+	# console.log allOperands
 
-# JSON: javascript object notation
+	filecontents = JSON.stringify allOperands
+	fs.writeFileSync './data/opcodes.json', filecontents, 'utf-8'
 
-	# console.log '============='
-	# console.log tdAr[1]
+content = fs.readFileSync './data/opcodes.json', 'utf-8'
+opAr = JSON.parse content
 
-# rowAr = []
-# for row in ar
-# 	if not row or row.indexOf('axis') is -1
-# 		continue
-# 	console.log row
-# 	newrow = getBetween row, 'axis="', '">'
-# 	rowAr.push newrow
+console.log opAr.length
+console.log opAr[1]
 
-# console.log 'number of rows in rowAr', rowAr.length
-# console.log rowAr
+for item in opAr
+	item.decimal = parseInt item.opcode, 16
+	ar = splitTrimNoNull item.mnemonic, ' '
+	ar2 = []
+	if ar[1]
+		# console.log ar[1]+''
+		ar2 = splitTrimNoNull ar[1], ','
+	item.parsed = _.concat ar[0], ar2
 
-# console.log content
 
-# for row, index in rowAr
-# 	if index is 0
-# 		field = row.split '|'
-# 		console.log field
+outstr = JSON.stringify opAr
+fs.writeFileSync './data/opcodes2.json', outstr, 'utf-8'
