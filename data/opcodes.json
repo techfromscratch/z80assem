@@ -1,0 +1,1765 @@
+[{
+	"opcode": "00",
+	"mnemonic": "nop",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "No operation is performed."
+}, {
+	"opcode": "01",
+	"mnemonic": "ld bc,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "Loads ** into bc."
+}, {
+	"opcode": "02",
+	"mnemonic": "ld (bc),a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Stores a into the memory location pointed to by bc."
+}, {
+	"opcode": "03",
+	"mnemonic": "inc bc",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "6",
+	"description": "Adds one to bc."
+}, {
+	"opcode": "04",
+	"mnemonic": "inc b",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds one to b."
+}, {
+	"opcode": "05",
+	"mnemonic": "dec b",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts one from b."
+}, {
+	"opcode": "06",
+	"mnemonic": "ld b,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Loads * into b."
+}, {
+	"opcode": "07",
+	"mnemonic": "rlca",
+	"flags": "+0-0--",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are rotated left one bit position. The contents of bit 7 are copied to the carry flag and bit 0."
+}, {
+	"opcode": "08",
+	"mnemonic": "ex af,af'",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Exchanges the 16-bit contents of af and af'."
+}, {
+	"opcode": "09",
+	"mnemonic": "add hl,bc",
+	"flags": "++-+--",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The value of bc is added to hl."
+}, {
+	"opcode": "0A",
+	"mnemonic": "ld a,(bc)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Loads the value pointed to by bc into a."
+}, {
+	"opcode": "0B",
+	"mnemonic": "dec bc",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "6",
+	"description": "Subtracts one from bc."
+}, {
+	"opcode": "0C",
+	"mnemonic": "inc c",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds one to c."
+}, {
+	"opcode": "0D",
+	"mnemonic": "dec c",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts one from c."
+}, {
+	"opcode": "0E",
+	"mnemonic": "ld c,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Loads * into c."
+}, {
+	"opcode": "0F",
+	"mnemonic": "rrca",
+	"flags": "+0-0--",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are rotated right one bit position. The contents of bit 0 are copied to the carry flag and bit 7."
+}, {
+	"opcode": "10",
+	"mnemonic": "djnz *",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "13/8",
+	"description": "The b register is decremented, and if not zero, the signed value * is added to pc. The jump is measured from the start of the instruction opcode."
+}, {
+	"opcode": "11",
+	"mnemonic": "ld de,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "Loads ** into de."
+}, {
+	"opcode": "12",
+	"mnemonic": "ld (de),a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Stores a into the memory location pointed to by de."
+}, {
+	"opcode": "13",
+	"mnemonic": "inc de",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "6",
+	"description": "Adds one to de."
+}, {
+	"opcode": "14",
+	"mnemonic": "inc d",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds one to d."
+}, {
+	"opcode": "15",
+	"mnemonic": "dec d",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts one from d."
+}, {
+	"opcode": "16",
+	"mnemonic": "ld d,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Loads * into d."
+}, {
+	"opcode": "17",
+	"mnemonic": "rla",
+	"flags": "+0-0--",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are rotated left one bit position. The contents of bit 7 are copied to the carry flag and the previous contents of the carry flag are copied to bit 0."
+}, {
+	"opcode": "18",
+	"mnemonic": "jr *",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "12",
+	"description": "The signed value * is added to pc. The jump is measured from the start of the instruction opcode."
+}, {
+	"opcode": "19",
+	"mnemonic": "add hl,de",
+	"flags": "++-+--",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The value of de is added to hl."
+}, {
+	"opcode": "1A",
+	"mnemonic": "ld a,(de)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Loads the value pointed to by de into a."
+}, {
+	"opcode": "1B",
+	"mnemonic": "dec de",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "6",
+	"description": "Subtracts one from de."
+}, {
+	"opcode": "1C",
+	"mnemonic": "inc e",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds one to e."
+}, {
+	"opcode": "1D",
+	"mnemonic": "dec e",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts one from e."
+}, {
+	"opcode": "1E",
+	"mnemonic": "ld e,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Loads * into e."
+}, {
+	"opcode": "1F",
+	"mnemonic": "rra",
+	"flags": "+0-0--",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are rotated right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of the carry flag are copied to bit 7."
+}, {
+	"opcode": "20",
+	"mnemonic": "jr nz,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "12/7",
+	"description": "If condition cc is true, the signed value * is added to pc. The jump is measured from the start of the instruction opcode."
+}, {
+	"opcode": "21",
+	"mnemonic": "ld hl,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "Loads ** into hl."
+}, {
+	"opcode": "22",
+	"mnemonic": "ld (**),hl",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "16",
+	"description": "Stores hl into the memory location pointed to by **."
+}, {
+	"opcode": "23",
+	"mnemonic": "inc hl",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "6",
+	"description": "Adds one to hl."
+}, {
+	"opcode": "24",
+	"mnemonic": "inc h",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds one to h."
+}, {
+	"opcode": "25",
+	"mnemonic": "dec h",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts one from h."
+}, {
+	"opcode": "26",
+	"mnemonic": "ld h,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Loads * into h."
+}, {
+	"opcode": "27",
+	"mnemonic": "daa",
+	"flags": "*-P*++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adjusts a for BCD addition and subtraction operations."
+}, {
+	"opcode": "28",
+	"mnemonic": "jr z,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "12/7",
+	"description": "If condition cc is true, the signed value * is added to pc. The jump is measured from the start of the instruction opcode."
+}, {
+	"opcode": "29",
+	"mnemonic": "add hl,hl",
+	"flags": "++-+--",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The value of hl is added to hl."
+}, {
+	"opcode": "2A",
+	"mnemonic": "ld hl,(**)",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "16",
+	"description": "Loads the value pointed to by ** into hl."
+}, {
+	"opcode": "2B",
+	"mnemonic": "dec hl",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "6",
+	"description": "Subtracts one from hl."
+}, {
+	"opcode": "2C",
+	"mnemonic": "inc l",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds one to l."
+}, {
+	"opcode": "2D",
+	"mnemonic": "dec l",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts one from l."
+}, {
+	"opcode": "2E",
+	"mnemonic": "ld l,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Loads * into l."
+}, {
+	"opcode": "2F",
+	"mnemonic": "cpl",
+	"flags": "-1-1--",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are inverted (one's complement)."
+}, {
+	"opcode": "30",
+	"mnemonic": "jr nc,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "12/7",
+	"description": "If condition cc is true, the signed value * is added to pc. The jump is measured from the start of the instruction opcode."
+}, {
+	"opcode": "31",
+	"mnemonic": "ld sp,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "Loads ** into sp."
+}, {
+	"opcode": "32",
+	"mnemonic": "ld (**),a",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "13",
+	"description": "Stores a into the memory location pointed to by **."
+}, {
+	"opcode": "33",
+	"mnemonic": "inc sp",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "6",
+	"description": "Adds one to sp."
+}, {
+	"opcode": "34",
+	"mnemonic": "inc (hl)",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "Adds one to (hl)."
+}, {
+	"opcode": "35",
+	"mnemonic": "dec (hl)",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "Subtracts one from (hl)."
+}, {
+	"opcode": "36",
+	"mnemonic": "ld (hl),*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "10",
+	"description": "Loads * into (hl)."
+}, {
+	"opcode": "37",
+	"mnemonic": "scf",
+	"flags": "10-0--",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Sets the carry flag."
+}, {
+	"opcode": "38",
+	"mnemonic": "jr c,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "12/7",
+	"description": "If condition cc is true, the signed value * is added to pc. The jump is measured from the start of the instruction opcode."
+}, {
+	"opcode": "39",
+	"mnemonic": "add hl,sp",
+	"flags": "++-+--",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The value of hl is added to hl."
+}, {
+	"opcode": "3A",
+	"mnemonic": "ld a,(**)",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "13",
+	"description": "Loads the value pointed to by ** into a."
+}, {
+	"opcode": "3B",
+	"mnemonic": "dec sp",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "6",
+	"description": "Subtracts one from sp."
+}, {
+	"opcode": "3C",
+	"mnemonic": "inc a",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds one to a."
+}, {
+	"opcode": "3D",
+	"mnemonic": "dec a",
+	"flags": "-+V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts one from a."
+}, {
+	"opcode": "3E",
+	"mnemonic": "ld a,*",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Loads * into a."
+}, {
+	"opcode": "3F",
+	"mnemonic": "ccf",
+	"flags": "*0-*--",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Inverts the carry flag."
+}, {
+	"opcode": "40",
+	"mnemonic": "ld b,b",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of b are loaded into b."
+}, {
+	"opcode": "41",
+	"mnemonic": "ld b,c",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of c are loaded into b."
+}, {
+	"opcode": "42",
+	"mnemonic": "ld b,d",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of d are loaded into b."
+}, {
+	"opcode": "43",
+	"mnemonic": "ld b,e",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of e are loaded into b."
+}, {
+	"opcode": "44",
+	"mnemonic": "ld b,h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of h are loaded into b."
+}, {
+	"opcode": "45",
+	"mnemonic": "ld b,l",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of l are loaded into b."
+}, {
+	"opcode": "46",
+	"mnemonic": "ld b,(hl)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of (hl) are loaded into b."
+}, {
+	"opcode": "47",
+	"mnemonic": "ld b,a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are loaded into b."
+}, {
+	"opcode": "48",
+	"mnemonic": "ld c,b",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of b are loaded into c."
+}, {
+	"opcode": "49",
+	"mnemonic": "ld c,c",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of c are loaded into c."
+}, {
+	"opcode": "4A",
+	"mnemonic": "ld c,d",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of d are loaded into c."
+}, {
+	"opcode": "4B",
+	"mnemonic": "ld c,e",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of e are loaded into c."
+}, {
+	"opcode": "4C",
+	"mnemonic": "ld c,h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of h are loaded into c."
+}, {
+	"opcode": "4D",
+	"mnemonic": "ld c,l",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of l are loaded into c."
+}, {
+	"opcode": "4E",
+	"mnemonic": "ld c,(hl)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of (hl) are loaded into c."
+}, {
+	"opcode": "4F",
+	"mnemonic": "ld c,a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are loaded into c."
+}, {
+	"opcode": "50",
+	"mnemonic": "ld d,b",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of b are loaded into d."
+}, {
+	"opcode": "51",
+	"mnemonic": "ld d,c",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of c are loaded into d."
+}, {
+	"opcode": "52",
+	"mnemonic": "ld d,d",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of d are loaded into d."
+}, {
+	"opcode": "53",
+	"mnemonic": "ld d,e",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of e are loaded into d."
+}, {
+	"opcode": "54",
+	"mnemonic": "ld d,h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of h are loaded into d."
+}, {
+	"opcode": "55",
+	"mnemonic": "ld d,l",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of l are loaded into d."
+}, {
+	"opcode": "56",
+	"mnemonic": "ld d,(hl)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of (hl) are loaded into d."
+}, {
+	"opcode": "57",
+	"mnemonic": "ld d,a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are loaded into d."
+}, {
+	"opcode": "58",
+	"mnemonic": "ld e,b",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of b are loaded into e."
+}, {
+	"opcode": "59",
+	"mnemonic": "ld e,c",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of c are loaded into e."
+}, {
+	"opcode": "5A",
+	"mnemonic": "ld e,d",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of d are loaded into e."
+}, {
+	"opcode": "5B",
+	"mnemonic": "ld e,e",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of e are loaded into e."
+}, {
+	"opcode": "5C",
+	"mnemonic": "ld e,h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of h are loaded into e."
+}, {
+	"opcode": "5D",
+	"mnemonic": "ld e,l",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of l are loaded into e."
+}, {
+	"opcode": "5E",
+	"mnemonic": "ld e,(hl)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of (hl) are loaded into e."
+}, {
+	"opcode": "5F",
+	"mnemonic": "ld e,a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are loaded into e."
+}, {
+	"opcode": "60",
+	"mnemonic": "ld h,b",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of b are loaded into h."
+}, {
+	"opcode": "61",
+	"mnemonic": "ld h,c",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of c are loaded into h."
+}, {
+	"opcode": "62",
+	"mnemonic": "ld h,d",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of d are loaded into h."
+}, {
+	"opcode": "63",
+	"mnemonic": "ld h,e",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of e are loaded into h."
+}, {
+	"opcode": "64",
+	"mnemonic": "ld h,h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of h are loaded into h."
+}, {
+	"opcode": "65",
+	"mnemonic": "ld h,l",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of l are loaded into h."
+}, {
+	"opcode": "66",
+	"mnemonic": "ld h,(hl)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of (hl) are loaded into h."
+}, {
+	"opcode": "67",
+	"mnemonic": "ld h,a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are loaded into h."
+}, {
+	"opcode": "68",
+	"mnemonic": "ld l,b",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of b are loaded into l."
+}, {
+	"opcode": "69",
+	"mnemonic": "ld l,c",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of c are loaded into l."
+}, {
+	"opcode": "6A",
+	"mnemonic": "ld l,d",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of d are loaded into l."
+}, {
+	"opcode": "6B",
+	"mnemonic": "ld l,e",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of e are loaded into l."
+}, {
+	"opcode": "6C",
+	"mnemonic": "ld l,h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of h are loaded into l."
+}, {
+	"opcode": "6D",
+	"mnemonic": "ld l,l",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of l are loaded into l."
+}, {
+	"opcode": "6E",
+	"mnemonic": "ld l,(hl)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of (hl) are loaded into l."
+}, {
+	"opcode": "6F",
+	"mnemonic": "ld l,a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are loaded into l."
+}, {
+	"opcode": "70",
+	"mnemonic": "ld (hl),b",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of b are loaded into (hl)."
+}, {
+	"opcode": "71",
+	"mnemonic": "ld (hl),c",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of c are loaded into (hl)."
+}, {
+	"opcode": "72",
+	"mnemonic": "ld (hl),d",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of d are loaded into (hl)."
+}, {
+	"opcode": "73",
+	"mnemonic": "ld (hl),e",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of e are loaded into (hl)."
+}, {
+	"opcode": "74",
+	"mnemonic": "ld (hl),h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of h are loaded into (hl)."
+}, {
+	"opcode": "75",
+	"mnemonic": "ld (hl),l",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of l are loaded into (hl)."
+}, {
+	"opcode": "76",
+	"mnemonic": "halt",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Suspends CPU operation until an interrupt or reset occurs."
+}, {
+	"opcode": "77",
+	"mnemonic": "ld (hl),a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of a are loaded into (hl)."
+}, {
+	"opcode": "78",
+	"mnemonic": "ld a,b",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of b are loaded into a."
+}, {
+	"opcode": "79",
+	"mnemonic": "ld a,c",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of c are loaded into a."
+}, {
+	"opcode": "7A",
+	"mnemonic": "ld a,d",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of d are loaded into a."
+}, {
+	"opcode": "7B",
+	"mnemonic": "ld a,e",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of e are loaded into a."
+}, {
+	"opcode": "7C",
+	"mnemonic": "ld a,h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of h are loaded into a."
+}, {
+	"opcode": "7D",
+	"mnemonic": "ld a,l",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of l are loaded into a."
+}, {
+	"opcode": "7E",
+	"mnemonic": "ld a,(hl)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "The contents of (hl) are loaded into a."
+}, {
+	"opcode": "7F",
+	"mnemonic": "ld a,a",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "The contents of a are loaded into a."
+}, {
+	"opcode": "80",
+	"mnemonic": "add a,b",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds b to a."
+}, {
+	"opcode": "81",
+	"mnemonic": "add a,c",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds c to a."
+}, {
+	"opcode": "82",
+	"mnemonic": "add a,d",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds d to a."
+}, {
+	"opcode": "83",
+	"mnemonic": "add a,e",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds e to a."
+}, {
+	"opcode": "84",
+	"mnemonic": "add a,h",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds h to a."
+}, {
+	"opcode": "85",
+	"mnemonic": "add a,l",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds l to a."
+}, {
+	"opcode": "86",
+	"mnemonic": "add a,(hl)",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Adds (hl) to a."
+}, {
+	"opcode": "87",
+	"mnemonic": "add a,a",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds a to a."
+}, {
+	"opcode": "88",
+	"mnemonic": "adc a,b",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds b and the carry flag to a."
+}, {
+	"opcode": "89",
+	"mnemonic": "adc a,c",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds c and the carry flag to a."
+}, {
+	"opcode": "8A",
+	"mnemonic": "adc a,d",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds d and the carry flag to a."
+}, {
+	"opcode": "8B",
+	"mnemonic": "adc a,e",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds e and the carry flag to a."
+}, {
+	"opcode": "8C",
+	"mnemonic": "adc a,h",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds h and the carry flag to a."
+}, {
+	"opcode": "8D",
+	"mnemonic": "adc a,l",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds l and the carry flag to a."
+}, {
+	"opcode": "8E",
+	"mnemonic": "adc a,(hl)",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Adds (hl) and the carry flag to a."
+}, {
+	"opcode": "8F",
+	"mnemonic": "adc a,a",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Adds a and the carry flag to a."
+}, {
+	"opcode": "90",
+	"mnemonic": "sub b",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts b from a."
+}, {
+	"opcode": "91",
+	"mnemonic": "sub c",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts c from a."
+}, {
+	"opcode": "92",
+	"mnemonic": "sub d",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts d from a."
+}, {
+	"opcode": "93",
+	"mnemonic": "sub e",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts e from a."
+}, {
+	"opcode": "94",
+	"mnemonic": "sub h",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts h from a."
+}, {
+	"opcode": "95",
+	"mnemonic": "sub l",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts l from a."
+}, {
+	"opcode": "96",
+	"mnemonic": "sub (hl)",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Subtracts (hl) from a."
+}, {
+	"opcode": "97",
+	"mnemonic": "sub a",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts a from a."
+}, {
+	"opcode": "98",
+	"mnemonic": "sbc a,b",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts b and the carry flag from a."
+}, {
+	"opcode": "99",
+	"mnemonic": "sbc a,c",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts c and the carry flag from a."
+}, {
+	"opcode": "9A",
+	"mnemonic": "sbc a,d",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts d and the carry flag from a."
+}, {
+	"opcode": "9B",
+	"mnemonic": "sbc a,e",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts e and the carry flag from a."
+}, {
+	"opcode": "9C",
+	"mnemonic": "sbc a,h",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts h and the carry flag from a."
+}, {
+	"opcode": "9D",
+	"mnemonic": "sbc a,l",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts l and the carry flag from a."
+}, {
+	"opcode": "9E",
+	"mnemonic": "sbc a,(hl)",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Subtracts (hl) and the carry flag from a."
+}, {
+	"opcode": "9F",
+	"mnemonic": "sbc a,a",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts a and the carry flag from a."
+}, {
+	"opcode": "A0",
+	"mnemonic": "and b",
+	"flags": "00P1++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise AND on a with b."
+}, {
+	"opcode": "A1",
+	"mnemonic": "and c",
+	"flags": "00P1++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise AND on a with c."
+}, {
+	"opcode": "A2",
+	"mnemonic": "and d",
+	"flags": "00P1++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise AND on a with d."
+}, {
+	"opcode": "A3",
+	"mnemonic": "and e",
+	"flags": "00P1++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise AND on a with e."
+}, {
+	"opcode": "A4",
+	"mnemonic": "and h",
+	"flags": "00P1++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise AND on a with h."
+}, {
+	"opcode": "A5",
+	"mnemonic": "and l",
+	"flags": "00P1++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise AND on a with l."
+}, {
+	"opcode": "A6",
+	"mnemonic": "and (hl)",
+	"flags": "00P1++",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Bitwise AND on a with (hl)."
+}, {
+	"opcode": "A7",
+	"mnemonic": "and a",
+	"flags": "00P1++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise AND on a with a."
+}, {
+	"opcode": "A8",
+	"mnemonic": "xor b",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise XOR on a with b."
+}, {
+	"opcode": "A9",
+	"mnemonic": "xor c",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise XOR on a with c."
+}, {
+	"opcode": "AA",
+	"mnemonic": "xor d",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise XOR on a with d."
+}, {
+	"opcode": "AB",
+	"mnemonic": "xor e",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise XOR on a with e."
+}, {
+	"opcode": "AC",
+	"mnemonic": "xor h",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise XOR on a with h."
+}, {
+	"opcode": "AD",
+	"mnemonic": "xor l",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise XOR on a with l."
+}, {
+	"opcode": "AE",
+	"mnemonic": "xor (hl)",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Bitwise XOR on a with (hl)."
+}, {
+	"opcode": "AF",
+	"mnemonic": "xor a",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise XOR on a with a."
+}, {
+	"opcode": "B0",
+	"mnemonic": "or b",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise OR on a with b."
+}, {
+	"opcode": "B1",
+	"mnemonic": "or c",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise OR on a with c."
+}, {
+	"opcode": "B2",
+	"mnemonic": "or d",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise OR on a with d."
+}, {
+	"opcode": "B3",
+	"mnemonic": "or e",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise OR on a with e."
+}, {
+	"opcode": "B4",
+	"mnemonic": "or h",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise OR on a with h."
+}, {
+	"opcode": "B5",
+	"mnemonic": "or l",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise OR on a with l."
+}, {
+	"opcode": "B6",
+	"mnemonic": "or (hl)",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Bitwise OR on a with (hl)."
+}, {
+	"opcode": "B7",
+	"mnemonic": "or a",
+	"flags": "00P0++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Bitwise OR on a with a."
+}, {
+	"opcode": "B8",
+	"mnemonic": "cp b",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts b from a and affects flags according to the result. a is not modified."
+}, {
+	"opcode": "B9",
+	"mnemonic": "cp c",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts c from a and affects flags according to the result. a is not modified."
+}, {
+	"opcode": "BA",
+	"mnemonic": "cp d",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts d from a and affects flags according to the result. a is not modified."
+}, {
+	"opcode": "BB",
+	"mnemonic": "cp e",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts e from a and affects flags according to the result. a is not modified."
+}, {
+	"opcode": "BC",
+	"mnemonic": "cp h",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts h from a and affects flags according to the result. a is not modified."
+}, {
+	"opcode": "BD",
+	"mnemonic": "cp l",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts l from a and affects flags according to the result. a is not modified."
+}, {
+	"opcode": "BE",
+	"mnemonic": "cp (hl)",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "7",
+	"description": "Subtracts (hl) from a and affects flags according to the result. a is not modified."
+}, {
+	"opcode": "BF",
+	"mnemonic": "cp a",
+	"flags": "++V+++",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Subtracts a from a and affects flags according to the result. a is not modified."
+}, {
+	"opcode": "C0",
+	"mnemonic": "ret nz",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11/5",
+	"description": "If condition cc is true, the top stack entry is popped into pc."
+}, {
+	"opcode": "C1",
+	"mnemonic": "pop bc",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "10",
+	"description": "The memory location pointed to by sp is stored into c and sp is incremented. The memory location pointed to by sp is stored into b and sp is incremented again."
+}, {
+	"opcode": "C2",
+	"mnemonic": "jp nz,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "If condition cc is true, ** is copied to pc."
+}, {
+	"opcode": "C3",
+	"mnemonic": "jp **",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "** is copied to pc."
+}, {
+	"opcode": "C4",
+	"mnemonic": "call nz,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "17/10",
+	"description": "If condition cc is true, the current pc value plus three is pushed onto the stack, then is loaded with **."
+}, {
+	"opcode": "C5",
+	"mnemonic": "push bc",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "sp is decremented and b is stored into the memory location pointed to by sp. sp is decremented again and c is stored into the memory location pointed to by sp."
+}, {
+	"opcode": "C6",
+	"mnemonic": "add a,*",
+	"flags": "++V+++",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Adds * to a."
+}, {
+	"opcode": "C7",
+	"mnemonic": "rst 00h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The current pc value plus one is pushed onto the stack, then is loaded with 00h."
+}, {
+	"opcode": "C8",
+	"mnemonic": "ret z",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11/5",
+	"description": "If condition cc is true, the top stack entry is popped into pc."
+}, {
+	"opcode": "C9",
+	"mnemonic": "ret",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "10",
+	"description": "The top stack entry is popped into pc."
+}, {
+	"opcode": "CA",
+	"mnemonic": "jp z,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "If condition cc is true, ** is copied to pc."
+}, {
+	"opcode": "CC",
+	"mnemonic": "call z,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "17/10",
+	"description": "If condition cc is true, the current pc value plus three is pushed onto the stack, then is loaded with **."
+}, {
+	"opcode": "CD",
+	"mnemonic": "call **",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "17",
+	"description": "The current pc value plus three is pushed onto the stack, then is loaded with **."
+}, {
+	"opcode": "CE",
+	"mnemonic": "adc a,*",
+	"flags": "++V+++",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Adds * and the carry flag to a."
+}, {
+	"opcode": "CF",
+	"mnemonic": "rst 08h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The current pc value plus one is pushed onto the stack, then is loaded with 08h."
+}, {
+	"opcode": "D0",
+	"mnemonic": "ret nc",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11/5",
+	"description": "If condition cc is true, the top stack entry is popped into pc."
+}, {
+	"opcode": "D1",
+	"mnemonic": "pop de",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "10",
+	"description": "The memory location pointed to by sp is stored into e and sp is incremented. The memory location pointed to by sp is stored into d and sp is incremented again."
+}, {
+	"opcode": "D2",
+	"mnemonic": "jp nc,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "If condition cc is true, ** is copied to pc."
+}, {
+	"opcode": "D3",
+	"mnemonic": "out (*),a",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "11",
+	"description": "The value of a is written to port *."
+}, {
+	"opcode": "D4",
+	"mnemonic": "call nc,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "17/10",
+	"description": "If condition cc is true, the current pc value plus three is pushed onto the stack, then is loaded with **."
+}, {
+	"opcode": "D5",
+	"mnemonic": "push de",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "sp is decremented and d is stored into the memory location pointed to by sp. sp is decremented again and e is stored into the memory location pointed to by sp."
+}, {
+	"opcode": "D6",
+	"mnemonic": "sub *",
+	"flags": "++V+++",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Subtracts * from a."
+}, {
+	"opcode": "D7",
+	"mnemonic": "rst 10h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The current pc value plus one is pushed onto the stack, then is loaded with 10h."
+}, {
+	"opcode": "D8",
+	"mnemonic": "ret c",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11/5",
+	"description": "If condition cc is true, the top stack entry is popped into pc."
+}, {
+	"opcode": "D9",
+	"mnemonic": "exx",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Exchanges the 16-bit contents of bc, de, and hl with bc', de', and hl'."
+}, {
+	"opcode": "DA",
+	"mnemonic": "jp c,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "If condition cc is true, ** is copied to pc."
+}, {
+	"opcode": "DB",
+	"mnemonic": "in a,(*)",
+	"flags": "------",
+	"numbytes": 2,
+	"cycles": "11",
+	"description": "A byte from port * is written to a."
+}, {
+	"opcode": "DC",
+	"mnemonic": "call c,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "17/10",
+	"description": "If condition cc is true, the current pc value plus three is pushed onto the stack, then is loaded with **."
+}, {
+	"opcode": "DE",
+	"mnemonic": "sbc a,*",
+	"flags": "++V+++",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Subtracts * and the carry flag from a."
+}, {
+	"opcode": "DF",
+	"mnemonic": "rst 18h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The current pc value plus one is pushed onto the stack, then is loaded with 18h."
+}, {
+	"opcode": "E0",
+	"mnemonic": "ret po",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11/5",
+	"description": "If condition cc is true, the top stack entry is popped into pc."
+}, {
+	"opcode": "E1",
+	"mnemonic": "pop hl",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "10",
+	"description": "The memory location pointed to by sp is stored into l and sp is incremented. The memory location pointed to by sp is stored into h and sp is incremented again."
+}, {
+	"opcode": "E2",
+	"mnemonic": "jp po,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "If condition cc is true, ** is copied to pc."
+}, {
+	"opcode": "E3",
+	"mnemonic": "ex (sp),hl",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "19",
+	"description": "Exchanges (sp) with l, and (sp+1) with h."
+}, {
+	"opcode": "E4",
+	"mnemonic": "call po,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "17/10",
+	"description": "If condition cc is true, the current pc value plus three is pushed onto the stack, then is loaded with **."
+}, {
+	"opcode": "E5",
+	"mnemonic": "push hl",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "sp is decremented and h is stored into the memory location pointed to by sp. sp is decremented again and l is stored into the memory location pointed to by sp."
+}, {
+	"opcode": "E6",
+	"mnemonic": "and *",
+	"flags": "00P1++",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Bitwise AND on a with *."
+}, {
+	"opcode": "E7",
+	"mnemonic": "rst 20h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The current pc value plus one is pushed onto the stack, then is loaded with 20h."
+}, {
+	"opcode": "E8",
+	"mnemonic": "ret pe",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11/5",
+	"description": "If condition cc is true, the top stack entry is popped into pc."
+}, {
+	"opcode": "E9",
+	"mnemonic": "jp (hl)",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Loads the value of hl into pc."
+}, {
+	"opcode": "EA",
+	"mnemonic": "jp pe,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "If condition cc is true, ** is copied to pc."
+}, {
+	"opcode": "EB",
+	"mnemonic": "ex de,hl",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Exchanges the 16-bit contents of de and hl."
+}, {
+	"opcode": "EC",
+	"mnemonic": "call pe,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "17/10",
+	"description": "If condition cc is true, the current pc value plus three is pushed onto the stack, then is loaded with **."
+}, {
+	"opcode": "EE",
+	"mnemonic": "xor *",
+	"flags": "00P0++",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Bitwise XOR on a with *."
+}, {
+	"opcode": "EF",
+	"mnemonic": "rst 28h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The current pc value plus one is pushed onto the stack, then is loaded with 28h."
+}, {
+	"opcode": "F0",
+	"mnemonic": "ret p",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11/5",
+	"description": "If condition cc is true, the top stack entry is popped into pc."
+}, {
+	"opcode": "F1",
+	"mnemonic": "pop af",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "10",
+	"description": "The memory location pointed to by sp is stored into f and sp is incremented. The memory location pointed to by sp is stored into a and sp is incremented again."
+}, {
+	"opcode": "F2",
+	"mnemonic": "jp p,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "If condition cc is true, ** is copied to pc."
+}, {
+	"opcode": "F3",
+	"mnemonic": "di",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Resets both interrupt flip-flops, thus prenting maskable interrupts from triggering."
+}, {
+	"opcode": "F4",
+	"mnemonic": "call p,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "17/10",
+	"description": "If condition cc is true, the current pc value plus three is pushed onto the stack, then is loaded with **."
+}, {
+	"opcode": "F5",
+	"mnemonic": "push af",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "sp is decremented and a is stored into the memory location pointed to by sp. sp is decremented again and f is stored into the memory location pointed to by sp."
+}, {
+	"opcode": "F6",
+	"mnemonic": "or *",
+	"flags": "00P0++",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Bitwise OR on a with *."
+}, {
+	"opcode": "F7",
+	"mnemonic": "rst 30h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The current pc value plus one is pushed onto the stack, then is loaded with 30h."
+}, {
+	"opcode": "F8",
+	"mnemonic": "ret m",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11/5",
+	"description": "If condition cc is true, the top stack entry is popped into pc."
+}, {
+	"opcode": "F9",
+	"mnemonic": "ld sp,hl",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "6",
+	"description": "Loads the value of hl into sp."
+}, {
+	"opcode": "FA",
+	"mnemonic": "jp m,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "10",
+	"description": "If condition cc is true, ** is copied to pc."
+}, {
+	"opcode": "FB",
+	"mnemonic": "ei",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "4",
+	"description": "Sets both interrupt flip-flops, thus allowing maskable interrupts to occur. An interrupt will not occur until after the immediatedly following instruction."
+}, {
+	"opcode": "FC",
+	"mnemonic": "call m,**",
+	"flags": "------",
+	"numbytes": 3,
+	"cycles": "17/10",
+	"description": "If condition cc is true, the current pc value plus three is pushed onto the stack, then is loaded with **."
+}, {
+	"opcode": "FE",
+	"mnemonic": "cp *",
+	"flags": "++V+++",
+	"numbytes": 2,
+	"cycles": "7",
+	"description": "Subtracts * from a and affects flags according to the result. a is not modified."
+}, {
+	"opcode": "FF",
+	"mnemonic": "rst 38h",
+	"flags": "------",
+	"numbytes": 1,
+	"cycles": "11",
+	"description": "The current pc value plus one is pushed onto the stack, then is loaded with 38h."
+}]
