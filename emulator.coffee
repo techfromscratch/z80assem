@@ -30,9 +30,21 @@ registerInfo =
 
 
 readSource = (sourceStr, machineState, memory) ->
+	{ pc } = machineState
 	# if sourceStr is length=2, then it's a 16-bit register
 	# if sourceStr is length=1, then it's an 8-bit register
-	if sourceStr[0] is '('
+	if sourceStr is '(**)'
+		addr = readSource '**', machineState, memory
+		newval = memory[addr]
+		if _.isNumber memory[addr+1]
+			newval += memory[addr+1] * 256
+		return newval
+
+	else if sourceStr is '**'
+		return memory[pc+1] + memory[pc+2] * 256
+	else if sourceStr is '*'
+		return memory[pc+1]
+	else if sourceStr[0] is '('
 		# memory pointer
 		newSourceStr = sourceStr[1 ... -1]
 		regValue = readSource newSourceStr, machineState, memory
@@ -50,8 +62,15 @@ readSource = (sourceStr, machineState, memory) ->
 		else
 			return fullValue % 256
 
+
 writeDestination = (destStr, value, machineState, memory) ->
-	if destStr[0] is '('
+	if destStr is '(**)'
+		addr = readSource '**', machineState, memory
+		memory[addr] = value % 256
+		# memory[addr+1] = (value & 0xFF00) / 256
+		memory[addr+1] = (value & 0xFF00) >> 8
+
+	else if destStr[0] is '('
 		newdestStr = destStr[1 ... -1]
 		regValue = readSource newdestStr, machineState, memory
 		memory[regValue] = value
@@ -100,6 +119,12 @@ executeCode =
 		operand2 = currOpcodeObj.parsed[1]
 		value = readSource operand2, machineState, memory
 		writeDestination operand2, value+1, machineState, memory
+	ld: (machineState, memory, currOpcodeObj) ->
+		operand2 = currOpcodeObj.parsed[1]
+		operand3 = currOpcodeObj.parsed[2]
+
+		value = readSource operand3, machineState, memory
+		writeDestination operand2, value, machineState, memory
 	nop: (machineState, memory, currOpcodeObj) ->
 	out: (machineState, memory, currOpcodeObj) ->
 

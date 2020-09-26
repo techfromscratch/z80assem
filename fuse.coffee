@@ -12,7 +12,7 @@ for item, index in testinAr
 
 allOpcodeObj = u.getAllOpcodeObj()
 allOpcodes = u.getOpcodeGroups()
-opcodeToTest = ['nop', 'inc', 'dec', 'ei', 'di', 'in', 'out', 'halt']
+opcodeToTest = ['nop', 'inc', 'dec', 'ei', 'di', 'in', 'out', 'halt', 'ld']
 
 for op in opcodeToTest
 	_.pull allOpcodes, op
@@ -70,6 +70,7 @@ for testitem in testinAr
 				console.log "ERROR: memory locations don't match", opObj.mnemonic
 				console.log "expected memory", testoutAr[index].memory
 				console.log 'current memory', memory
+				console.log opObj
 				break
 
 		if passed
