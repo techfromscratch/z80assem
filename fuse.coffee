@@ -25,6 +25,8 @@ passedTests = 0
 for testitem in testinAr
 	{ machineState, memory, index, opcode } = testitem
 
+	origMachineState = _.cloneDeep machineState
+
 	opObj = allOpcodeObj[_.toUpper opcode]
 	if not opObj
 		continue
@@ -33,6 +35,10 @@ for testitem in testinAr
 
 	if u.contains opcodeToTest, opFamily
 		em.runOpcode machineState, memory
+
+		testoutAr[index].machineState.af = testoutAr[index].machineState.af & 0xFF00
+		machineState.af = machineState.af & 0xFF00
+
 		diffObj = u.objdiff testoutAr[index].machineState, machineState
 		delete diffObj.r
 		delete diffObj.tstates
@@ -40,11 +46,13 @@ for testitem in testinAr
 		if _.keys(diffObj).length
 			failedTests += 1
 			console.log 'ERROR:', opObj.mnemonic, diffObj
+			# console.log 'origMachineState', origMachineState
+			# console.log 'current machineState', machineState
 			console.log opObj
 		else
 			passedTests += 1
 
-console.log 'machineState', machineState
+# console.log 'machineState', machineState
 
 console.log "Passed tests: #{passedTests}, Failed tests: #{failedTests}"
 if not failedTests
