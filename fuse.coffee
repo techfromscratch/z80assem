@@ -12,14 +12,16 @@ for item, index in testinAr
 
 allOpcodeObj = u.getAllOpcodeObj()
 allOpcodes = u.getOpcodeGroups()
-opcodeToTest = ['nop']
+opcodeToTest = ['nop', 'inc']
 
 for op in opcodeToTest
 	_.pull allOpcodes, op
 
-console.log 'opcodes not tested', allOpcodes
+# console.log 'opcodes not tested', allOpcodes
 
-failedTests = false
+failedTests = 0
+passedTests = 0
+
 for testitem in testinAr
 	{ machineState, memory, index, opcode } = testitem
 
@@ -36,9 +38,15 @@ for testitem in testinAr
 		delete diffObj.tstates
 
 		if _.keys(diffObj).length
-			failedTests = true
+			failedTests += 1
 			console.log 'ERROR:', opObj.mnemonic, diffObj
+			console.log opObj
+		else
+			passedTests += 1
 
+console.log 'machineState', machineState
+
+console.log "Passed tests: #{passedTests}, Failed tests: #{failedTests}"
 if not failedTests
-	console.log 'All tests succeeded!!'
+	console.log '  *** All tests succeeded!!'
 
