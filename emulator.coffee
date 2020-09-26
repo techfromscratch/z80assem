@@ -42,10 +42,7 @@ readSource = (sourceStr, machineState, memory) ->
 	else if sourceStr.length is 1
 		regInfo = registerInfo[sourceStr]
 		{ bytetype, fullRegister } = regInfo
-		# example regInfo for "b"
-			# b:
-			# 	bytetype: 'high'
-			# 	fullRegister: 'bc'
+
 		fullValue = machineState[fullRegister]
 		# console.log 'read fullValue', fullValue, Math.floor fullValue / 256
 		if bytetype is 'high'
@@ -59,9 +56,14 @@ writeDestination = (destStr, value, machineState, memory) ->
 		regValue = readSource newdestStr, machineState, memory
 		memory[regValue] = value
 	else if destStr.length is 2
+		if value < 0
+			value += 65536
 		# 16-bit register
 		machineState[destStr] = value
 	else if destStr.length is 1
+		if value < 0
+			value += 256
+
 		regInfo = registerInfo[destStr]
 		{ fullRegister, bytetype } = regInfo
 
@@ -85,6 +87,10 @@ executeCode =
 		operand2 = currOpcodeObj.parsed[1]
 		value = readSource operand2, machineState, memory
 		writeDestination operand2, value+1, machineState, memory
+	dec: (machineState, memory, currOpcodeObj) ->
+		operand2 = currOpcodeObj.parsed[1]
+		value = readSource operand2, machineState, memory
+		writeDestination operand2, value-1, machineState, memory
 
 
 runOpcode = (machineState, memory) ->
@@ -93,15 +99,9 @@ runOpcode = (machineState, memory) ->
 	currOpcodeObj = allOpcodeObj[currOpcode]
 	currGroup = currOpcodeObj.parsed[0]
 
-	console.log '--------------------'
 	fn = executeCode[currGroup]
 	if fn
 		fn machineState, memory, currOpcodeObj
-
-	console.log 'currOpcode', currOpcode, currOpcodeObj.mnemonic
-	# console.log 'currGroup', currGroup
-	# console.log 'currOpcodeObj', currOpcodeObj
-
 	machineState.pc += 1
 
 module.exports = {

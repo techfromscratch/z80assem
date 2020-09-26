@@ -12,12 +12,12 @@ for item, index in testinAr
 
 allOpcodeObj = u.getAllOpcodeObj()
 allOpcodes = u.getOpcodeGroups()
-opcodeToTest = ['nop', 'inc']
+opcodeToTest = ['nop', 'inc', 'dec']
 
 for op in opcodeToTest
 	_.pull allOpcodes, op
 
-# console.log 'opcodes not tested', allOpcodes
+console.log 'opcodes not tested', allOpcodes
 
 failedTests = 0
 passedTests = 0
@@ -49,8 +49,8 @@ for testitem in testinAr
 			failedTests += 1
 			passed = false
 			console.log 'ERROR:', opObj.mnemonic, diffObj
-			# console.log 'origMachineState', origMachineState
-			# console.log 'current machineState', machineState
+			console.log 'origMachineState', origMachineState
+			console.log 'current machineState', machineState
 			console.log opObj
 
 		# check memory locations
@@ -58,12 +58,13 @@ for testitem in testinAr
 			if memory[key] isnt val
 				failedTests += 1
 				passed = false
-				console.log "ERROR: memory locations don't match"
+				console.log "ERROR: memory locations don't match", opObj.mnemonic
 				console.log "expected memory", testoutAr[index].memory
 				console.log 'current memory', memory
 				break
 
 		if passed
+			console.log opObj.opcode, ':', opObj.mnemonic
 			passedTests += 1
 
 # console.log 'machineState', machineState
