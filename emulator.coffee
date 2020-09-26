@@ -84,12 +84,12 @@ runOpcode = (machineState, memory) ->
 	currOpcodeObj = allOpcodeObj[currOpcode]
 	currGroup = currOpcodeObj.parsed[0]
 
-	# console.log '--------------------'
+	console.log '--------------------'
 	fn = executeCode[currGroup]
 	if fn
 		fn machineState, memory, currOpcodeObj
 
-	# console.log 'currOpcode', currOpcode, currOpcodeObj.mnemonic
+	console.log 'currOpcode', currOpcode, currOpcodeObj.mnemonic
 	# console.log 'currGroup', currGroup
 	# console.log 'currOpcodeObj', currOpcodeObj
 
