@@ -21,3 +21,9 @@ exports.splitTrimNoNull = (test) ->
 	test.equal true, _.isEqual ['a','b','c','d'], u.splitTrimNoNull 'a b c   d', ' '
 	test.equal true, _.isEqual ['a','b','c','d'], u.splitTrimNoNull 'a , b , c   ,  d', ','
 	test.done()
+
+exports.getAllOpcodeObj = (test) ->
+	allopcodes = u.getAllOpcodeObj()
+	test.equal 252, _.keys(allopcodes).length
+	test.equal 35, u.getOpcodeGroups().length
+	test.done()

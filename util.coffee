@@ -1,5 +1,20 @@
 # utility functions
+fs = require 'fs'
 _ = require 'lodash'
+
+allopcodeObj = JSON.parse fs.readFileSync './data/opcodes2.json', 'utf-8'
+opcodeGroups = {}
+for op in allopcodeObj
+	opcodeGroups[ op.parsed[0] ] = 1
+opcodeGroups = _.keys opcodeGroups
+allopcodeObj = _.keyBy allopcodeObj, 'opcode'
+
+
+getAllOpcodeObj = ->
+	return allopcodeObj
+
+getOpcodeGroups = ->
+	return opcodeGroups
 
 getBetween = (fullstr, start, end) ->
 	temp = fullstr.split(start)[1]
@@ -40,4 +55,6 @@ module.exports = {
 	contains
 	splitTrimNoNull
 	objdiff
+	getAllOpcodeObj
+	getOpcodeGroups
 }

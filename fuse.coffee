@@ -7,40 +7,23 @@ em = require './emulator'
 
 testinAr = JSON.parse fs.readFileSync './data/testin.json', 'utf-8'
 testoutAr = JSON.parse fs.readFileSync './data/testout.json', 'utf-8'
-opcodeObj = JSON.parse fs.readFileSync './data/opcodes2.json', 'utf-8'
-
-opcodeFamily = {}
-for op in opcodeObj
-	opcodeFamily[ op.parsed[0] ] = 1
-
-opcodeObj = _.keyBy opcodeObj, 'opcode'
-
 for item, index in testinAr
 	item.index = index
 
-# { machineState, memory, index } = testinAr[0]
-# em.runOpcode machineState
-
-# diffObj = u.objdiff testoutAr[index].machineState, machineState
-# delete diffObj.R
-# delete diffObj.tstates
-
-# console.log diffObj
-
-
-allOpcodes = _.keys opcodeFamily
+allOpcodeObj = u.getAllOpcodeObj()
+allOpcodes = u.getOpcodeGroups()
 opcodeToTest = ['nop']
 
 for op in opcodeToTest
 	_.pull allOpcodes, op
 
-# console.log 'opcodes not tested', allOpcodes
+console.log 'opcodes not tested', allOpcodes
 
 failedTests = false
 for testitem in testinAr
 	{ machineState, memory, index, opcode } = testitem
 
-	opObj = opcodeObj[_.toUpper opcode]
+	opObj = allOpcodeObj[_.toUpper opcode]
 	if not opObj
 		continue
 	# console.log opcode, opObj
