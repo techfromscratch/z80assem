@@ -82,15 +82,26 @@ writeDestination = (destStr, value, machineState, memory) ->
 
 
 executeCode =
-	nop: (machineState, memory, currOpcodeObj) ->
-	inc: (machineState, memory, currOpcodeObj) ->
-		operand2 = currOpcodeObj.parsed[1]
-		value = readSource operand2, machineState, memory
-		writeDestination operand2, value+1, machineState, memory
 	dec: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
 		value = readSource operand2, machineState, memory
 		writeDestination operand2, value-1, machineState, memory
+	di: (machineState, memory, currOpcodeObj) ->
+		machineState.iff1 = 0
+		machineState.iff2 = 0
+	ei: (machineState, memory, currOpcodeObj) ->
+		machineState.iff1 = 1
+		machineState.iff2 = 1
+	halt: (machineState, memory, currOpcodeObj) ->
+		machineState.pc = -1
+		machineState.halted = 1
+	in: (machineState, memory, currOpcodeObj) ->
+	inc: (machineState, memory, currOpcodeObj) ->
+		operand2 = currOpcodeObj.parsed[1]
+		value = readSource operand2, machineState, memory
+		writeDestination operand2, value+1, machineState, memory
+	nop: (machineState, memory, currOpcodeObj) ->
+	out: (machineState, memory, currOpcodeObj) ->
 
 
 runOpcode = (machineState, memory) ->
@@ -102,7 +113,7 @@ runOpcode = (machineState, memory) ->
 	fn = executeCode[currGroup]
 	if fn
 		fn machineState, memory, currOpcodeObj
-	machineState.pc += 1
+	machineState.pc += currOpcodeObj.numbytes
 
 module.exports = {
 	runOpcode

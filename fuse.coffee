@@ -12,7 +12,7 @@ for item, index in testinAr
 
 allOpcodeObj = u.getAllOpcodeObj()
 allOpcodes = u.getOpcodeGroups()
-opcodeToTest = ['nop', 'inc', 'dec']
+opcodeToTest = ['nop', 'inc', 'dec', 'ei', 'di', 'in', 'out', 'halt']
 
 for op in opcodeToTest
 	_.pull allOpcodes, op
@@ -37,20 +37,29 @@ for testitem in testinAr
 	if u.contains opcodeToTest, opFamily
 		em.runOpcode machineState, memory
 
-		testoutAr[index].machineState.af = testoutAr[index].machineState.af & 0xFF00
+		testoutMachineState = testoutAr[index].machineState
+
+		testoutAr[index].machineState.af = testoutMachineState.af & 0xFF00
 		machineState.af = machineState.af & 0xFF00
 
 		# compare current machineState with expected machineState
-		diffObj = u.objdiff testoutAr[index].machineState, machineState
+		diffObj = u.objdiff testoutMachineState, machineState
 		delete diffObj.r
 		delete diffObj.tstates
 
 		if _.keys(diffObj).length
 			failedTests += 1
 			passed = false
+
+			currObj = {}
+			expectedObj = {}
+			for key in _.keys diffObj
+				currObj[key] = machineState[key]
+				expectedObj[key] = testoutMachineState[key]
+
 			console.log 'ERROR:', opObj.mnemonic, diffObj
-			console.log 'origMachineState', origMachineState
-			console.log 'current machineState', machineState
+			console.log 'current machineState:', currObj
+			console.log 'expected machineState:', expectedObj
 			console.log opObj
 
 		# check memory locations
