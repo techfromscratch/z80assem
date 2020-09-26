@@ -23,6 +23,7 @@ failedTests = 0
 passedTests = 0
 
 for testitem in testinAr
+	passed = true
 	{ machineState, memory, index, opcode } = testitem
 
 	origMachineState = _.cloneDeep machineState
@@ -39,17 +40,30 @@ for testitem in testinAr
 		testoutAr[index].machineState.af = testoutAr[index].machineState.af & 0xFF00
 		machineState.af = machineState.af & 0xFF00
 
+		# compare current machineState with expected machineState
 		diffObj = u.objdiff testoutAr[index].machineState, machineState
 		delete diffObj.r
 		delete diffObj.tstates
 
 		if _.keys(diffObj).length
 			failedTests += 1
+			passed = false
 			console.log 'ERROR:', opObj.mnemonic, diffObj
 			# console.log 'origMachineState', origMachineState
 			# console.log 'current machineState', machineState
 			console.log opObj
-		else
+
+		# check memory locations
+		for key, val of testoutAr[index].memory
+			if memory[key] isnt val
+				failedTests += 1
+				passed = false
+				console.log "ERROR: memory locations don't match"
+				console.log "expected memory", testoutAr[index].memory
+				console.log 'current memory', memory
+				break
+
+		if passed
 			passedTests += 1
 
 # console.log 'machineState', machineState

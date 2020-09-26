@@ -29,10 +29,15 @@ registerInfo =
 		fullRegister: 'hl'
 
 
-readSource = (sourceStr, machineState) ->
+readSource = (sourceStr, machineState, memory) ->
 	# if sourceStr is length=2, then it's a 16-bit register
 	# if sourceStr is length=1, then it's an 8-bit register
-	if sourceStr.length is 2
+	if sourceStr[0] is '('
+		# memory pointer
+		newSourceStr = sourceStr[1 ... -1]
+		regValue = readSource newSourceStr, machineState, memory
+		return memory[regValue]
+	else if sourceStr.length is 2
 		return machineState[sourceStr]
 	else if sourceStr.length is 1
 		regInfo = registerInfo[sourceStr]
@@ -49,7 +54,11 @@ readSource = (sourceStr, machineState) ->
 			return fullValue % 256
 
 writeDestination = (destStr, value, machineState, memory) ->
-	if destStr.length is 2
+	if destStr[0] is '('
+		newdestStr = destStr[1 ... -1]
+		regValue = readSource newdestStr, machineState, memory
+		memory[regValue] = value
+	else if destStr.length is 2
 		# 16-bit register
 		machineState[destStr] = value
 	else if destStr.length is 1
@@ -74,7 +83,7 @@ executeCode =
 	nop: (machineState, memory, currOpcodeObj) ->
 	inc: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
-		value = readSource operand2, machineState
+		value = readSource operand2, machineState, memory
 		writeDestination operand2, value+1, machineState, memory
 
 
