@@ -114,12 +114,23 @@ flagStatusIndex =
 	z: 4
 	s: 5
 flagOrder = ['s', 'z', '', 'h', '', 'v', 'n', 'c']
+# flagStatus = ['c', 'n', 'v', 'h', 'z', 's']
 
 setFlags = (machineState, memory, currOpcodeObj, prevVal, currVal) ->
 	{ flags, parsed } = currOpcodeObj
 	optype = parsed[0]
-	# flagStatus = ['c', 'n', 'v', 'h', 'z', 's']
+	operand2 = parsed[1]
+	numbits = if operand2.length is 2 then 16 else 8
+
 	flagObj = {}
+
+	flagObj.s =
+		switch flags[flagStatusIndex.s]
+			when '+'
+				if numbits is 8
+					currVal & 0x80
+				else
+					currVal & 0x8000
 
 	flagObj.n =
 		switch flags[flagStatusIndex.n]
@@ -136,7 +147,6 @@ setFlags = (machineState, memory, currOpcodeObj, prevVal, currVal) ->
 			flagValue |= flagtemp
 
 	machineState.af = (machineState.af & 0xFF00) + flagValue
-
 
 
 executeCode =

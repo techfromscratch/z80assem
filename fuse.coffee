@@ -47,9 +47,6 @@ for testitem in testinAr
 		delete diffObj.r
 		delete diffObj.tstates
 
-		if opObj.opcode is '2D'
-			console.log machineState
-
 		if _.keys(diffObj).length
 			failedTests += 1
 			passed = false
