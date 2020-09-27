@@ -39,13 +39,16 @@ for testitem in testinAr
 
 		testoutMachineState = testoutAr[index].machineState
 
-		testoutAr[index].machineState.af = testoutMachineState.af & 0xFFDB
-		machineState.af = machineState.af & 0xFFDB
+		testoutAr[index].machineState.af = testoutMachineState.af & 0xFFD7
+		machineState.af = machineState.af & 0xFFD7
 
 		# compare current machineState with expected machineState
 		diffObj = u.objdiff testoutMachineState, machineState
 		delete diffObj.r
 		delete diffObj.tstates
+
+		if opObj.opcode is '2D'
+			console.log machineState
 
 		if _.keys(diffObj).length
 			failedTests += 1

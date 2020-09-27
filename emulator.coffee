@@ -99,15 +99,51 @@ writeDestination = (destStr, value, machineState, memory) ->
 			# fullValue &= 0xFFFF
 			machineState[fullRegister] = fullValue
 
-setFlag = () ->
-	flagOrder = ['s', 'z', '', 'h', '', 'v', 'n', 'c']
-	flagStatus = ['c', 'n', 'v', 'h', 'z', 's']
+flagOrderObj =
+	s: 7
+	z: 6
+	h: 4
+	v: 2
+	n: 1
+	c: 0
+flagStatusIndex =
+	c: 0
+	n: 1
+	v: 2
+	h: 3
+	z: 4
+	s: 5
+flagOrder = ['s', 'z', '', 'h', '', 'v', 'n', 'c']
+
+setFlags = (machineState, memory, currOpcodeObj, prevVal, currVal) ->
+	{ flags, parsed } = currOpcodeObj
+	optype = parsed[0]
+	# flagStatus = ['c', 'n', 'v', 'h', 'z', 's']
+	flagObj = {}
+
+	flagObj.n =
+		switch flags[flagStatusIndex.n]
+			when '+'
+				if optype in ['dec']
+					1
+				else
+					0
+
+	flagValue = 0
+	for flagLetter in flagOrder
+		if flagObj[flagLetter]
+			flagtemp = 1 << flagOrderObj[flagLetter]
+			flagValue |= flagtemp
+
+	machineState.af = (machineState.af & 0xFF00) + flagValue
+
 
 
 executeCode =
 	dec: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
 		value = readSource operand2, machineState, memory
+		setFlags machineState, memory, currOpcodeObj, value, value-1
 		writeDestination operand2, value-1, machineState, memory
 	di: (machineState, memory, currOpcodeObj) ->
 		machineState.iff1 = 0
