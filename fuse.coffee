@@ -39,8 +39,8 @@ for testitem in testinAr
 
 		testoutMachineState = testoutAr[index].machineState
 
-		testoutAr[index].machineState.af = testoutMachineState.af & 0xFF00
-		machineState.af = machineState.af & 0xFF00
+		testoutAr[index].machineState.af = testoutMachineState.af & 0xFFDB
+		machineState.af = machineState.af & 0xFFDB
 
 		# compare current machineState with expected machineState
 		diffObj = u.objdiff testoutMachineState, machineState

@@ -99,6 +99,10 @@ writeDestination = (destStr, value, machineState, memory) ->
 			# fullValue &= 0xFFFF
 			machineState[fullRegister] = fullValue
 
+setFlag = () ->
+	flagOrder = ['s', 'z', '', 'h', '', 'v', 'n', 'c']
+	flagStatus = ['c', 'n', 'v', 'h', 'z', 's']
+
 
 executeCode =
 	dec: (machineState, memory, currOpcodeObj) ->
