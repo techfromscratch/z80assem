@@ -120,7 +120,12 @@ setFlags = (machineState, memory, currOpcodeObj, prevVal, currVal) ->
 	{ flags, parsed } = currOpcodeObj
 	optype = parsed[0]
 	operand2 = parsed[1]
-	numbits = if operand2.length is 2 then 16 else 8
+	if operand2.length is 2
+		numbits = 16
+		currVal = currVal & 0xFFFF
+	else
+		numbits = 8
+		currVal = currVal & 0xFF
 
 	flagObj = {}
 
@@ -132,6 +137,12 @@ setFlags = (machineState, memory, currOpcodeObj, prevVal, currVal) ->
 					currVal & 0x80
 				else
 					currVal & 0x8000
+
+	flagObj.z =
+		switch flags[flagStatusIndex.z]
+			when '+'
+				if currVal is 0 then 1
+
 
 	# half carry flag
 	flagObj.h =
