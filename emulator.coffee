@@ -109,7 +109,7 @@ flagOrderObj =
 flagStatusIndex =
 	c: 0
 	n: 1
-	v: 2
+	v: 2 			# also p flag
 	h: 3
 	z: 4
 	s: 5
@@ -144,6 +144,18 @@ setFlags = (machineState, memory, currOpcodeObj, prevVal, currVal) ->
 					when 'inc'
 						# prevVal: 0bxxxx1111 -> xxxx0000
 						if (prevVal & 0xF) is 0xF then 1
+
+	# overflow flag
+	flagObj.v =
+		switch flags[flagStatusIndex.v]
+			when 'V'
+				switch optype
+					when 'inc'
+						# inc: 0b0111 1111 = 127 + 1 turns negative
+						if (prevVal & 0xFF) is 0x7F then 1
+					when 'dec'
+						# dec: 0b1000 0000 = -128 - 1 turns positive
+						if (prevVal & 0xFF) is 0x80 then 1
 
 
 	# negative operation flag
