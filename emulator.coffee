@@ -165,6 +165,8 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 							if ((prev1Val & 0x0F) + (prev2Val & 0x0F)) & 0x10 then 1
 						else
 							if ((prev1Val & 0x0FFF) + (prev2Val & 0x0FFF)) & 0x1000 then 1
+					when 'sub'
+						if ((prev1Val & 0x0F) - (prev2Val & 0x0F)) & 0x10 then 1
 
 	# overflow flag
 	flagObj.v =
@@ -183,7 +185,7 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 	flagObj.n =
 		switch flags[flagStatusIndex.n]
 			when '+'
-				if optype in ['dec']
+				if optype in ['dec', 'sub']
 					1
 
 	flagObj.c =
@@ -267,6 +269,15 @@ executeCode =
 		operand2 = currOpcodeObj.parsed[1]
 		writeDestination operand2, value, machineState, memory
 		machineState.sp += 2
+
+	sub: (machineState, memory, currOpcodeObj) ->
+		operand3 = currOpcodeObj.parsed[1]
+
+		value2 = readSource 'a', machineState, memory
+		value3 = readSource operand3, machineState, memory
+		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 - value3
+		writeDestination 'a', value2 - value3, machineState, memory
+
 
 
 runOpcode = (machineState, memory) ->

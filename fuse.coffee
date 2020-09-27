@@ -25,6 +25,7 @@ opcodeToTest = [
 	'push'
 	'pop'
 	'add'
+	'sub'
 ]
 
 for op in opcodeToTest
