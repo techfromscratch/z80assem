@@ -12,7 +12,7 @@ for item, index in testinAr
 
 allOpcodeObj = u.getAllOpcodeObj()
 allOpcodes = u.getOpcodeGroups()
-opcodeToTest = ['nop', 'inc', 'dec', 'ei', 'di', 'in', 'out', 'halt', 'ld']
+opcodeToTest = ['nop', 'inc', 'dec', 'ei', 'di', 'in', 'out', 'halt', 'ld', 'push', 'pop']
 
 for op in opcodeToTest
 	_.pull allOpcodes, op

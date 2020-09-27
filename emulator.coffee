@@ -127,6 +127,22 @@ executeCode =
 		writeDestination operand2, value, machineState, memory
 	nop: (machineState, memory, currOpcodeObj) ->
 	out: (machineState, memory, currOpcodeObj) ->
+	push: (machineState, memory, currOpcodeObj) ->
+		{ sp } = machineState
+		sp -= 1
+		operand2 = currOpcodeObj.parsed[1]
+		value = readSource operand2, machineState, memory
+		memory[sp] = Math.floor value / 256
+		# memory[sp] = (value & 0xFF00) >> 8
+		sp -= 1
+		memory[sp] = value & 0xFF
+		machineState.sp = sp
+	pop: (machineState, memory, currOpcodeObj) ->
+		{ sp } = machineState
+		value = memory[sp] + memory[sp+1] * 256
+		operand2 = currOpcodeObj.parsed[1]
+		writeDestination operand2, value, machineState, memory
+		machineState.sp += 2
 
 
 runOpcode = (machineState, memory) ->
