@@ -124,6 +124,7 @@ setFlags = (machineState, memory, currOpcodeObj, prevVal, currVal) ->
 
 	flagObj = {}
 
+	# sign flag
 	flagObj.s =
 		switch flags[flagStatusIndex.s]
 			when '+'
@@ -132,13 +133,25 @@ setFlags = (machineState, memory, currOpcodeObj, prevVal, currVal) ->
 				else
 					currVal & 0x8000
 
+	# half carry flag
+	flagObj.h =
+		switch flags[flagStatusIndex.h]
+			when '+'
+				switch optype
+					when 'dec'
+						# prevVal: 0bxxxx0000 -> xxxx1111
+						if (prevVal & 0xF) is 0 then 1
+					when 'inc'
+						# prevVal: 0bxxxx1111 -> xxxx0000
+						if (prevVal & 0xF) is 0xF then 1
+
+
+	# negative operation flag
 	flagObj.n =
 		switch flags[flagStatusIndex.n]
 			when '+'
 				if optype in ['dec']
 					1
-				else
-					0
 
 	flagValue = 0
 	for flagLetter in flagOrder
@@ -168,6 +181,7 @@ executeCode =
 	inc: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
 		value = readSource operand2, machineState, memory
+		setFlags machineState, memory, currOpcodeObj, value, value+1
 		writeDestination operand2, value+1, machineState, memory
 	ld: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
