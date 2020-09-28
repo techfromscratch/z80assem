@@ -29,6 +29,9 @@ opcodeToTest = [
 	'adc'
 	'sbc'
 	'cp'
+	'and'
+	'or'
+	'xor'
 ]
 
 for op in opcodeToTest
@@ -48,7 +51,7 @@ for testitem in testinAr
 	opObj = allOpcodeObj[_.toUpper opcode]
 	if not opObj
 		continue
-	# console.log opcode, opObj
+	# console.log 'opcode:', opcode, opObj.mnemonic
 	opFamily = opObj.parsed[0]
 
 	if u.contains opcodeToTest, opFamily

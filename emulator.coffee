@@ -120,6 +120,25 @@ flagStatusIndex =
 flagOrder = ['s', 'z', '', 'h', '', 'v', 'n', 'c']
 # flagStatus = ['c', 'n', 'v', 'h', 'z', 's']
 
+parity_bits = [
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1
+]
+
 # returns 1 if set, 0 if unset for requested flag
 getFlag = (flagname, machineState) ->
 	flagbyte = machineState.af & 0xFF
@@ -147,6 +166,10 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 	# sign flag
 	flagObj.s =
 		switch flags[flagStatusIndex.s]
+			when '1'
+				1
+			when '0'
+				0
 			when '+'
 				if numbits is 8
 					result & 0x80
@@ -155,6 +178,10 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 
 	flagObj.z =
 		switch flags[flagStatusIndex.z]
+			when '1'
+				1
+			when '0'
+				0
 			when '+'
 				if result is 0 then 1
 
@@ -162,6 +189,10 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 	# half carry flag
 	flagObj.h =
 		switch flags[flagStatusIndex.h]
+			when '1'
+				1
+			when '0'
+				0
 			when '+'
 				switch optype
 					when 'dec'
@@ -185,6 +216,10 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 	# overflow flag
 	flagObj.v =
 		switch flags[flagStatusIndex.v]
+			when '1'
+				1
+			when '0'
+				0
 			when 'V'
 				switch optype
 					when 'inc'
@@ -197,17 +232,27 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 						if ((prev2Val & 0x80) is (prev1Val & 0x80)) & ((prev1Val & 0x80) isnt (result & 0x80)) then 1
 					when 'sub', 'sbc', 'cp'
 						if ((prev2Val & 0x80) isnt (prev1Val & 0x80)) & ((prev1Val & 0x80) isnt (result & 0x80)) then 1
+			when 'P'
+				parity_bits[result]
 
 
 	# negative operation flag
 	flagObj.n =
 		switch flags[flagStatusIndex.n]
+			when '1'
+				1
+			when '0'
+				0
 			when '+'
 				if optype in ['dec', 'sub', 'sbc', 'cp']
 					1
 
 	flagObj.c =
 		switch flags[flagStatusIndex.c]
+			when '1'
+				1
+			when '0'
+				0
 			when '+'
 				if numbits is 8
 					origResult & 0xF00
@@ -242,6 +287,14 @@ executeCode =
 		value3 = readSource operand3, machineState, memory
 		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 + value3
 		writeDestination operand2, value2 + value3, machineState, memory
+
+	and: (machineState, memory, currOpcodeObj) ->
+		operand3 = currOpcodeObj.parsed[1]
+
+		value2 = readSource 'a', machineState, memory
+		value3 = readSource operand3, machineState, memory
+		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 & value3
+		writeDestination 'a', value2 & value3, machineState, memory
 
 	cp: (machineState, memory, currOpcodeObj) ->
 		operand3 = currOpcodeObj.parsed[1]
@@ -285,6 +338,14 @@ executeCode =
 
 	nop: (machineState, memory, currOpcodeObj) ->
 
+	or: (machineState, memory, currOpcodeObj) ->
+		operand3 = currOpcodeObj.parsed[1]
+
+		value2 = readSource 'a', machineState, memory
+		value3 = readSource operand3, machineState, memory
+		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 | value3
+		writeDestination 'a', value2 | value3, machineState, memory
+
 	out: (machineState, memory, currOpcodeObj) ->
 
 	push: (machineState, memory, currOpcodeObj) ->
@@ -322,6 +383,15 @@ executeCode =
 		value3 = readSource operand3, machineState, memory
 		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 - value3
 		writeDestination 'a', value2 - value3, machineState, memory
+
+	xor: (machineState, memory, currOpcodeObj) ->
+		operand3 = currOpcodeObj.parsed[1]
+
+		value2 = readSource 'a', machineState, memory
+		value3 = readSource operand3, machineState, memory
+		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 ^ value3
+		writeDestination 'a', value2 ^ value3, machineState, memory
+
 
 
 
