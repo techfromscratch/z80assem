@@ -102,6 +102,7 @@ writeDestination = (destStr, value, machineState, memory) ->
 			# fullValue &= 0xFFFF
 			machineState[fullRegister] = fullValue
 
+# which bit position in the flag register
 flagOrderObj =
 	s: 7
 	z: 6
@@ -118,6 +119,15 @@ flagStatusIndex =
 	s: 5
 flagOrder = ['s', 'z', '', 'h', '', 'v', 'n', 'c']
 # flagStatus = ['c', 'n', 'v', 'h', 'z', 's']
+
+# returns 1 if set, 0 if unset for requested flag
+getFlag = (flagname, machineState) ->
+	flagbyte = machineState.af & 0xFF
+	# 0100 0000 = mask for z flag
+	shiftbits = flagOrderObj[flagname]
+	flagmask = 1 << shiftbits
+	return (flagbyte & flagmask) >> shiftbits 		# 1 if set, 0 if unset
+
 
 setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 	{ flags, parsed } = currOpcodeObj
@@ -165,8 +175,12 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 							if ((prev1Val & 0x0F) + (prev2Val & 0x0F)) & 0x10 then 1
 						else
 							if ((prev1Val & 0x0FFF) + (prev2Val & 0x0FFF)) & 0x1000 then 1
+					when 'adc'
+						if ((prev1Val & 0x0F) + (prev2Val & 0x0F) + getFlag('c', machineState)) & 0x10 then 1
 					when 'sub'
 						if ((prev1Val & 0x0F) - (prev2Val & 0x0F)) & 0x10 then 1
+					when 'sbc'
+						if ((prev1Val & 0x0F) - (prev2Val & 0x0F) - getFlag('c', machineState)) & 0x10 then 1
 
 	# overflow flag
 	flagObj.v =
@@ -185,7 +199,7 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 	flagObj.n =
 		switch flags[flagStatusIndex.n]
 			when '+'
-				if optype in ['dec', 'sub']
+				if optype in ['dec', 'sub', 'sbc']
 					1
 
 	flagObj.c =
@@ -206,6 +220,16 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 
 
 executeCode =
+	adc: (machineState, memory, currOpcodeObj) ->
+		operand2 = currOpcodeObj.parsed[1]
+		operand3 = currOpcodeObj.parsed[2]
+		flagval = getFlag 'c', machineState
+
+		value2 = readSource operand2, machineState, memory
+		value3 = readSource operand3, machineState, memory
+		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 + value3 + flagval
+		writeDestination operand2, value2 + value3 + flagval, machineState, memory
+
 	add: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
 		operand3 = currOpcodeObj.parsed[2]
@@ -269,6 +293,16 @@ executeCode =
 		operand2 = currOpcodeObj.parsed[1]
 		writeDestination operand2, value, machineState, memory
 		machineState.sp += 2
+
+	sbc: (machineState, memory, currOpcodeObj) ->
+		operand2 = currOpcodeObj.parsed[1]
+		operand3 = currOpcodeObj.parsed[2]
+		flagval = getFlag 'c', machineState
+
+		value2 = readSource operand2, machineState, memory
+		value3 = readSource operand3, machineState, memory
+		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 - value3 - flagval
+		writeDestination operand2, value2 - value3 - flagval, machineState, memory
 
 	sub: (machineState, memory, currOpcodeObj) ->
 		operand3 = currOpcodeObj.parsed[1]

@@ -26,6 +26,8 @@ opcodeToTest = [
 	'pop'
 	'add'
 	'sub'
+	'adc'
+	'sbc'
 ]
 
 for op in opcodeToTest
