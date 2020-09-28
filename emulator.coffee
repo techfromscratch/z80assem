@@ -44,6 +44,11 @@ readSource = (sourceStr, machineState, memory) ->
 		return memory[pc+1] + memory[pc+2] * 256
 	else if sourceStr is '*'
 		return memory[pc+1]
+	else if sourceStr is '$'
+		value = memory[pc+1]
+		if value > 127
+			value = -(256 - value)
+		return value
 	else if sourceStr[0] is '('
 		# memory pointer
 		newSourceStr = sourceStr[1 ... -1]
@@ -377,6 +382,24 @@ executeCode =
 				operand3 = currOpcodeObj.parsed[2]
 				memloc = readSource operand3, machineState, memory
 				machineState.pc = memloc - numbytes
+
+	jr: (machineState, memory, currOpcodeObj) ->
+		{ parsed, opcode, numbytes } = currOpcodeObj
+		operand2 = currOpcodeObj.parsed[1]
+
+		if parsed.length is 2
+			value = readSource '$', machineState, memory
+			newloc = machineState.pc + value
+		else
+			if getFlagCondition operand2, machineState
+				value = readSource '$', machineState, memory
+				newloc = machineState.pc + value
+			else
+				newloc = machineState.pc
+
+		if newloc < 0
+			newloc += 0x10000 			# decimal 65536
+		machineState.pc = newloc
 
 
 	ld: (machineState, memory, currOpcodeObj) ->
