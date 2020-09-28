@@ -33,6 +33,8 @@ splitTrimNoNull = (origstr, splitstr) ->
 			newar.push item
 	return newar
 
+num2binary = (num) ->
+	return ('0000000000000000'+num.toString(2))[-8...]
 
 ###*
 # Deep diff between two object, using lodash
@@ -57,4 +59,5 @@ module.exports = {
 	objdiff
 	getAllOpcodeObj
 	getOpcodeGroups
+	num2binary
 }

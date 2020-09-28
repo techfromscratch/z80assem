@@ -177,7 +177,7 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 							if ((prev1Val & 0x0FFF) + (prev2Val & 0x0FFF)) & 0x1000 then 1
 					when 'adc'
 						if ((prev1Val & 0x0F) + (prev2Val & 0x0F) + getFlag('c', machineState)) & 0x10 then 1
-					when 'sub'
+					when 'sub', 'cp'
 						if ((prev1Val & 0x0F) - (prev2Val & 0x0F)) & 0x10 then 1
 					when 'sbc'
 						if ((prev1Val & 0x0F) - (prev2Val & 0x0F) - getFlag('c', machineState)) & 0x10 then 1
@@ -193,13 +193,17 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 					when 'dec'
 						# dec: 0b1000 0000 = -128 - 1 turns positive
 						if (prev1Val & 0xFF) is 0x80 then 1
+					when 'add', 'adc'
+						if ((prev2Val & 0x80) is (prev1Val & 0x80)) & ((prev1Val & 0x80) isnt (result & 0x80)) then 1
+					when 'sub', 'sbc', 'cp'
+						if ((prev2Val & 0x80) isnt (prev1Val & 0x80)) & ((prev1Val & 0x80) isnt (result & 0x80)) then 1
 
 
 	# negative operation flag
 	flagObj.n =
 		switch flags[flagStatusIndex.n]
 			when '+'
-				if optype in ['dec', 'sub', 'sbc']
+				if optype in ['dec', 'sub', 'sbc', 'cp']
 					1
 
 	flagObj.c =
@@ -238,6 +242,13 @@ executeCode =
 		value3 = readSource operand3, machineState, memory
 		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 + value3
 		writeDestination operand2, value2 + value3, machineState, memory
+
+	cp: (machineState, memory, currOpcodeObj) ->
+		operand3 = currOpcodeObj.parsed[1]
+
+		value2 = readSource 'a', machineState, memory
+		value3 = readSource operand3, machineState, memory
+		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 - value3
 
 	dec: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
