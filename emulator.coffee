@@ -304,6 +304,14 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 
 	machineState.af = (machineState.af & 0xFF00) + flagValue
 
+pushValue = (value, machineState, memory) ->
+	{ sp } = machineState
+	sp -= 1
+	memory[sp] = Math.floor value / 256
+	# memory[sp] = (value & 0xFF00) >> 8
+	sp -= 1
+	memory[sp] = value & 0xFF
+	machineState.sp = sp
 
 executeCode =
 	adc: (machineState, memory, currOpcodeObj) ->
@@ -332,6 +340,17 @@ executeCode =
 		value3 = readSource operand3, machineState, memory
 		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 & value3
 		writeDestination 'a', value2 & value3, machineState, memory
+
+	call: (machineState, memory, currOpcodeObj) ->
+		{ parsed, opcode, numbytes } = currOpcodeObj
+
+		operand2 = currOpcodeObj.parsed[1]
+		nextaddr = machineState.pc + 3
+		if parsed.length is 2 or getFlagCondition operand2, machineState
+			pushValue nextaddr, machineState, memory
+			value = readSource '**', machineState, memory
+			machineState.pc = value - numbytes
+
 
 	cp: (machineState, memory, currOpcodeObj) ->
 		operand3 = currOpcodeObj.parsed[1]
@@ -387,19 +406,12 @@ executeCode =
 		{ parsed, opcode, numbytes } = currOpcodeObj
 		operand2 = currOpcodeObj.parsed[1]
 
-		if parsed.length is 2
+		if parsed.length is 2 or getFlagCondition operand2, machineState
 			value = readSource '$', machineState, memory
 			newloc = machineState.pc + value
-		else
-			if getFlagCondition operand2, machineState
-				value = readSource '$', machineState, memory
-				newloc = machineState.pc + value
-			else
-				newloc = machineState.pc
-
-		if newloc < 0
-			newloc += 0x10000 			# decimal 65536
-		machineState.pc = newloc
+			if newloc < 0
+				newloc += 0x10000 			# decimal 65536
+			machineState.pc = newloc
 
 
 	ld: (machineState, memory, currOpcodeObj) ->
@@ -422,15 +434,10 @@ executeCode =
 	out: (machineState, memory, currOpcodeObj) ->
 
 	push: (machineState, memory, currOpcodeObj) ->
-		{ sp } = machineState
-		sp -= 1
 		operand2 = currOpcodeObj.parsed[1]
 		value = readSource operand2, machineState, memory
-		memory[sp] = Math.floor value / 256
-		# memory[sp] = (value & 0xFF00) >> 8
-		sp -= 1
-		memory[sp] = value & 0xFF
-		machineState.sp = sp
+
+		pushValue value, machineState, memory
 
 	pop: (machineState, memory, currOpcodeObj) ->
 		{ sp } = machineState
