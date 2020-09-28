@@ -32,6 +32,7 @@ opcodeToTest = [
 	'and'
 	'or'
 	'xor'
+	'jp'
 ]
 
 for op in opcodeToTest

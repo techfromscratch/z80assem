@@ -36,6 +36,10 @@ splitTrimNoNull = (origstr, splitstr) ->
 num2binary = (num) ->
 	return ('0000000000000000'+num.toString(2))[-8...]
 
+displayFlag = (machineState) ->
+	flagbyte = machineState.af & 0xFF
+	num2binary flagbyte
+
 ###*
 # Deep diff between two object, using lodash
 # @param  {Object} object Object compared
@@ -60,4 +64,5 @@ module.exports = {
 	getAllOpcodeObj
 	getOpcodeGroups
 	num2binary
+	displayFlag
 }

@@ -120,6 +120,33 @@ flagStatusIndex =
 flagOrder = ['s', 'z', '', 'h', '', 'v', 'n', 'c']
 # flagStatus = ['c', 'n', 'v', 'h', 'z', 's']
 
+flagCodeObj =
+	c:
+		flagname: 'c'
+		isSet: true
+	nc:
+		flagname: 'c'
+		isSet: false
+	z:
+		flagname: 'z'
+		isSet: true
+	nz:
+		flagname: 'z'
+		isSet: false
+	m:
+		flagname: 's'
+		isSet: true
+	p:
+		flagname: 's'
+		isSet: false
+	pe:
+		flagname: 'v'
+		isSet: true
+	po:
+		flagname: 'v'
+		isSet: false
+
+
 parity_bits = [
 	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
 	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
@@ -146,6 +173,11 @@ getFlag = (flagname, machineState) ->
 	shiftbits = flagOrderObj[flagname]
 	flagmask = 1 << shiftbits
 	return (flagbyte & flagmask) >> shiftbits 		# 1 if set, 0 if unset
+
+getFlagCondition = (flagcode, machineState) ->
+	{ flagname, isSet } = flagCodeObj[flagcode]
+	flagvalue = getFlag flagname, machineState
+	return (flagvalue > 0) is isSet
 
 
 setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
@@ -328,6 +360,24 @@ executeCode =
 		value = readSource operand2, machineState, memory
 		setFlags machineState, memory, currOpcodeObj, value, 0, value+1
 		writeDestination operand2, value+1, machineState, memory
+
+	jp: (machineState, memory, currOpcodeObj) ->
+		{ parsed, opcode, numbytes } = currOpcodeObj
+		operand2 = currOpcodeObj.parsed[1]
+
+		if parsed.length is 2
+			if opcode is 'E9'
+				source = 'hl'
+			else if opcode is 'C3'
+				source = '**'
+			value = readSource source, machineState, memory
+			machineState.pc = value - numbytes
+		else
+			if getFlagCondition operand2, machineState
+				operand3 = currOpcodeObj.parsed[2]
+				memloc = readSource operand3, machineState, memory
+				machineState.pc = memloc - numbytes
+
 
 	ld: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
