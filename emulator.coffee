@@ -457,6 +457,13 @@ executeCode =
 			value = popStack machineState, memory
 			machineState.pc = value - numbytes
 
+	rst: (machineState, memory, currOpcodeObj) ->
+		{ parsed, opcode, numbytes } = currOpcodeObj
+		operand2 = currOpcodeObj.parsed[1]
+		addr = parseInt '0x'+operand2.replace 'h', ''
+		pushValue machineState.pc+1, machineState, memory
+		machineState.pc = addr - numbytes
+
 	sbc: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
 		operand3 = currOpcodeObj.parsed[2]
