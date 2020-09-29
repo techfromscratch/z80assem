@@ -37,6 +37,8 @@ opcodeToTest = [
 	'call'
 	'ret'
 	'rst'
+	'ex'
+	'exx'
 ]
 
 for op in opcodeToTest

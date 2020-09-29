@@ -31,6 +31,7 @@ registerInfo =
 
 readSource = (sourceStr, machineState, memory) ->
 	{ pc } = machineState
+
 	# if sourceStr is length=2, then it's a 16-bit register
 	# if sourceStr is length=1, then it's an 8-bit register
 	if sourceStr is '(**)'
@@ -54,7 +55,7 @@ readSource = (sourceStr, machineState, memory) ->
 		newSourceStr = sourceStr[1 ... -1]
 		regValue = readSource newSourceStr, machineState, memory
 		return memory[regValue]
-	else if sourceStr.length is 2
+	else if sourceStr.length is 2 or sourceStr.length is 3
 		return machineState[sourceStr]
 	else if sourceStr.length is 1
 		regInfo = registerInfo[sourceStr]
@@ -79,7 +80,7 @@ writeDestination = (destStr, value, machineState, memory) ->
 		newdestStr = destStr[1 ... -1]
 		regValue = readSource newdestStr, machineState, memory
 		memory[regValue] = value
-	else if destStr.length is 2
+	else if destStr.length is 2 or destStr.length is 3
 		if value < 0
 			value += 65536
 		value = value & 0xFFFF
@@ -378,6 +379,35 @@ executeCode =
 	ei: (machineState, memory, currOpcodeObj) ->
 		machineState.iff1 = 1
 		machineState.iff2 = 1
+
+	ex: (machineState, memory, currOpcodeObj) ->
+		operand2 = currOpcodeObj.parsed[1]
+		operand3 = currOpcodeObj.parsed[2]
+
+		if operand2 is 'af'
+			operand3 = 'af$'
+
+		if operand2 is '(sp)' and operand3 is 'hl'
+			lval = readSource 'l', machineState, memory
+			hval = readSource 'h', machineState, memory
+			spVal = readSource 'sp', machineState, memory
+			writeDestination 'hl', memory[spVal] + memory[spVal+1]*256, machineState, memory
+			memory[spVal] = lval
+			memory[spVal+1] = hval
+		else
+			value2 = readSource operand2, machineState, memory
+			value3 = readSource operand3, machineState, memory
+			writeDestination operand3, value2, machineState, memory
+			writeDestination operand2, value3, machineState, memory
+
+	exx: (machineState, memory, currOpcodeObj) ->
+		ar = ['bc', 'de', 'hl']
+		for reg in ar
+			reg$ = reg+'$'
+			value1 = readSource reg, machineState, memory
+			value2 = readSource reg$, machineState, memory
+			writeDestination reg$, value1, machineState, memory
+			writeDestination reg, value2, machineState, memory
 
 	halt: (machineState, memory, currOpcodeObj) ->
 		machineState.pc = -1
