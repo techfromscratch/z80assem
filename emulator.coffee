@@ -313,6 +313,12 @@ pushValue = (value, machineState, memory) ->
 	memory[sp] = value & 0xFF
 	machineState.sp = sp
 
+popStack = (machineState, memory) ->
+	{ sp } = machineState
+	value = memory[sp] + memory[sp+1] * 256
+	machineState.sp += 2
+	return value
+
 executeCode =
 	adc: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
@@ -436,15 +442,20 @@ executeCode =
 	push: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
 		value = readSource operand2, machineState, memory
-
 		pushValue value, machineState, memory
 
 	pop: (machineState, memory, currOpcodeObj) ->
-		{ sp } = machineState
-		value = memory[sp] + memory[sp+1] * 256
+		value = popStack machineState, memory
 		operand2 = currOpcodeObj.parsed[1]
 		writeDestination operand2, value, machineState, memory
-		machineState.sp += 2
+
+	ret: (machineState, memory, currOpcodeObj) ->
+		{ parsed, opcode, numbytes } = currOpcodeObj
+		operand2 = currOpcodeObj.parsed[1]
+
+		if parsed.length is 1 or getFlagCondition operand2, machineState
+			value = popStack machineState, memory
+			machineState.pc = value - numbytes
 
 	sbc: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
