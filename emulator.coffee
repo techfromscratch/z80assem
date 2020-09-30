@@ -393,6 +393,65 @@ executeCode =
 		setFlagBit 'n', 1, machineState
 		setFlagBit 'h', 1, machineState
 
+	# Binary Coded Decimal
+	# a register = 8 bits
+	# hex digit = 4 bits
+	# a register = 2 hex digits
+
+	# example:
+	# BCD "9" + binary 2
+	# BCD 1001 + 2 = 1011
+	# BCD 1011 = "11"
+
+	# example: 99
+	# decimal = "99"
+	# BCD 1001 1001
+	# BCD "99" + 3
+	# BCD "1" "0" "0"
+	# binary 1001 1001 + 1 = 1001 1010
+
+	# "99" + 2 = "9C"
+	# after first conversion = "A2"
+	# after 2nd conversion = "102"
+
+	daa: (machineState, memory, currOpcodeObj) ->
+		areg = readSource 'a', machineState, memory
+		temp = areg
+		if not getFlag 'n', machineState
+			if getFlag('h', machineState) or (areg & 0x0f) > 9
+				temp += 0x06
+			if getFlag('c', machineState) or areg > 0x99
+				temp += 0x60
+		else
+			if getFlag('h', machineState) or (areg & 0x0f) > 9
+				temp -= 0x06
+			if getFlag('c', machineState) or areg > 0x99
+				temp -= 0x60
+
+		flagval = if temp & 0x80 then 1 else 0
+		setFlagBit 's', flagval, machineState
+
+		# flags.Z = if !(temp & 0xff) then 1 else 0
+		flagval = if !(temp & 0xff) then 1 else 0
+		setFlagBit 'z', flagval, machineState
+
+		# flags.H = if areg & 0x10 ^ temp & 0x10 then 1 else 0
+		flagval = if areg & 0x10 ^ temp & 0x10 then 1 else 0
+		setFlagBit 'h', flagval, machineState
+
+		# flags.P = get_parity(temp & 0xff)
+		flagval = parity_bits[temp & 0xff]
+		setFlagBit 'v', flagval, machineState
+
+		# DAA never clears the carry flag if it was already set,
+		#  but it is able to set the carry flag if it was clear.
+		# Don't ask me, I don't know.
+		# Note also that we check for a BCD carry, instead of the usual.
+		# flags.C = if flags.C or areg > 0x99 then 1 else 0
+		flagval = if getFlag('c', machineState) or areg > 0x99 then 1 else 0
+		setFlagBit 'c', flagval, machineState
+		writeDestination 'a', temp & 0xff, machineState, memory
+
 	dec: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
 		value = readSource operand2, machineState, memory
@@ -483,7 +542,6 @@ executeCode =
 			if newloc < 0
 				newloc += 0x10000 			# decimal 65536
 			machineState.pc = newloc
-
 
 	ld: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]

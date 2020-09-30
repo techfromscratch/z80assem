@@ -47,6 +47,7 @@ opcodeToTest = [
 	'ccf'
 	'scf'
 	'cpl'
+	'daa'
 ]
 
 for op in opcodeToTest
