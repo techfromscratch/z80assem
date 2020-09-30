@@ -373,6 +373,11 @@ executeCode =
 			value = readSource '**', machineState, memory
 			machineState.pc = value - numbytes
 
+	ccf: (machineState, memory, currOpcodeObj) ->
+		cflag = getFlag 'c', machineState
+		setFlagBit 'n', 0, machineState
+		setFlagBit 'h', cflag, machineState
+		setFlagBit 'c', 1-cflag, machineState
 
 	cp: (machineState, memory, currOpcodeObj) ->
 		operand3 = currOpcodeObj.parsed[1]
@@ -380,6 +385,13 @@ executeCode =
 		value2 = readSource 'a', machineState, memory
 		value3 = readSource operand3, machineState, memory
 		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 - value3
+
+	cpl: (machineState, memory, currOpcodeObj) ->
+		areg = readSource 'a', machineState, memory
+		areg = areg ^ 0xFF
+		writeDestination 'a', areg, machineState, memory
+		setFlagBit 'n', 1, machineState
+		setFlagBit 'h', 1, machineState
 
 	dec: (machineState, memory, currOpcodeObj) ->
 		operand2 = currOpcodeObj.parsed[1]
@@ -572,6 +584,11 @@ executeCode =
 		value3 = readSource operand3, machineState, memory
 		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 - value3 - flagval
 		writeDestination operand2, value2 - value3 - flagval, machineState, memory
+
+	scf: (machineState, memory, currOpcodeObj) ->
+		setFlagBit 'c', 1, machineState
+		setFlagBit 'n', 0, machineState
+		setFlagBit 'h', 0, machineState
 
 	sub: (machineState, memory, currOpcodeObj) ->
 		operand3 = currOpcodeObj.parsed[1]

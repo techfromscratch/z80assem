@@ -44,6 +44,9 @@ opcodeToTest = [
 	'rra'
 	'rlca'
 	'rrca'
+	'ccf'
+	'scf'
+	'cpl'
 ]
 
 for op in opcodeToTest
