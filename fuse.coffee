@@ -40,6 +40,10 @@ opcodeToTest = [
 	'ex'
 	'exx'
 	'djnz'
+	'rla'
+	'rra'
+	'rlca'
+	'rrca'
 ]
 
 for op in opcodeToTest
@@ -92,6 +96,11 @@ for testitem in testinAr
 			console.log 'ERROR:', opObj.mnemonic, diffObj
 			console.log 'current machineState:', currObj
 			console.log 'expected machineState:', expectedObj
+			console.log 'current a register: ', u.num2binary (machineState.af & 0xFF00) >> 8
+			console.log 'expected a register:', u.num2binary (testoutMachineState.af & 0xFF00) >> 8
+			console.log '                sz_h_vnc'
+			console.log 'current flags: ', u.num2binary machineState.af & 0xFF
+			console.log 'expected flags:', u.num2binary testoutMachineState.af & 0xFF
 			console.log opObj
 
 		# check memory locations

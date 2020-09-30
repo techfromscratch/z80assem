@@ -180,6 +180,24 @@ getFlag = (flagname, machineState) ->
 	flagmask = 1 << shiftbits
 	return (flagbyte & flagmask) >> shiftbits 		# 1 if set, 0 if unset
 
+# value is 1 or 0
+setFlagBit = (flagname, value, machineState) ->
+	flagbyte = machineState.af & 0xFF
+	shiftbits = flagOrderObj[flagname]
+	temp = 1 << shiftbits
+	mask = 0xFF ^ temp
+
+	# example: flagname="z", value=1
+	# 0100 0000 = temp for z flag
+	# 1111 1111 = 0xFF
+	# 1011 1111 = mask
+
+	flagbyte = flagbyte & mask
+	flagvalue = value << shiftbits
+	flagbyte = flagbyte | flagvalue
+	machineState.af = (machineState.af & 0xFF00) | flagbyte
+
+
 getFlagCondition = (flagcode, machineState) ->
 	{ flagname, isSet } = flagCodeObj[flagcode]
 	flagvalue = getFlag flagname, machineState
@@ -192,7 +210,7 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 	operand2 = parsed[1]
 	origResult = result
 
-	if operand2.length is 2
+	if _.isString(operand2) and operand2.length is 2
 		numbits = 16
 		result = result & 0xFFFF
 	else
@@ -210,9 +228,9 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 				0
 			when '+'
 				if numbits is 8
-					result & 0x80
+					if result & 0x80 then 1 else 0
 				else
-					result & 0x8000
+					if result & 0x8000 then 1 else 0
 
 	flagObj.z =
 		switch flags[flagStatusIndex.z]
@@ -221,7 +239,7 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 			when '0'
 				0
 			when '+'
-				if result is 0 then 1
+				if result is 0 then 1 else 0
 
 
 	# half carry flag
@@ -235,21 +253,21 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 				switch optype
 					when 'dec'
 						# prev1Val: 0bxxxx0000 -> xxxx1111
-						if (prev1Val & 0xF) is 0 then 1
+						if (prev1Val & 0xF) is 0 then 1 else 0
 					when 'inc'
 						# prev1Val: 0bxxxx1111 -> xxxx0000
-						if (prev1Val & 0xF) is 0xF then 1
+						if (prev1Val & 0xF) is 0xF then 1 else 0
 					when 'add'
 						if numbits is 8
-							if ((prev1Val & 0x0F) + (prev2Val & 0x0F)) & 0x10 then 1
+							if ((prev1Val & 0x0F) + (prev2Val & 0x0F)) & 0x10 then 1 else 0
 						else
-							if ((prev1Val & 0x0FFF) + (prev2Val & 0x0FFF)) & 0x1000 then 1
+							if ((prev1Val & 0x0FFF) + (prev2Val & 0x0FFF)) & 0x1000 then 1 else 0
 					when 'adc'
-						if ((prev1Val & 0x0F) + (prev2Val & 0x0F) + getFlag('c', machineState)) & 0x10 then 1
+						if ((prev1Val & 0x0F) + (prev2Val & 0x0F) + getFlag('c', machineState)) & 0x10 then 1 else 0
 					when 'sub', 'cp'
-						if ((prev1Val & 0x0F) - (prev2Val & 0x0F)) & 0x10 then 1
+						if ((prev1Val & 0x0F) - (prev2Val & 0x0F)) & 0x10 then 1 else 0
 					when 'sbc'
-						if ((prev1Val & 0x0F) - (prev2Val & 0x0F) - getFlag('c', machineState)) & 0x10 then 1
+						if ((prev1Val & 0x0F) - (prev2Val & 0x0F) - getFlag('c', machineState)) & 0x10 then 1 else 0
 
 	# overflow flag
 	flagObj.v =
@@ -262,14 +280,14 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 				switch optype
 					when 'inc'
 						# inc: 0b0111 1111 = 127 + 1 turns negative
-						if (prev1Val & 0xFF) is 0x7F then 1
+						if (prev1Val & 0xFF) is 0x7F then 1 else 0
 					when 'dec'
 						# dec: 0b1000 0000 = -128 - 1 turns positive
-						if (prev1Val & 0xFF) is 0x80 then 1
+						if (prev1Val & 0xFF) is 0x80 then 1 else 0
 					when 'add', 'adc'
-						if ((prev2Val & 0x80) is (prev1Val & 0x80)) & ((prev1Val & 0x80) isnt (result & 0x80)) then 1
+						if ((prev2Val & 0x80) is (prev1Val & 0x80)) & ((prev1Val & 0x80) isnt (result & 0x80)) then 1 else 0
 					when 'sub', 'sbc', 'cp'
-						if ((prev2Val & 0x80) isnt (prev1Val & 0x80)) & ((prev1Val & 0x80) isnt (result & 0x80)) then 1
+						if ((prev2Val & 0x80) isnt (prev1Val & 0x80)) & ((prev1Val & 0x80) isnt (result & 0x80)) then 1 else 0
 			when 'P'
 				parity_bits[result]
 
@@ -282,8 +300,7 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 			when '0'
 				0
 			when '+'
-				if optype in ['dec', 'sub', 'sbc', 'cp']
-					1
+				if optype in ['dec', 'sub', 'sbc', 'cp'] then 1 else 0
 
 	flagObj.c =
 		switch flags[flagStatusIndex.c]
@@ -293,17 +310,15 @@ setFlags = (machineState, memory, currOpcodeObj, prev1Val, prev2Val, result) ->
 				0
 			when '+'
 				if numbits is 8
-					origResult & 0xF00
+					if origResult & 0xF00 then 1 else 0
 				else
-					origResult & 0xF0000
+					if origResult & 0xF0000 then 1 else 0
 
-	flagValue = 0
 	for flagLetter in flagOrder
-		if flagObj[flagLetter]
-			flagtemp = 1 << flagOrderObj[flagLetter]
-			flagValue |= flagtemp
+		newvalue = flagObj[flagLetter]
+		if _.isNumber newvalue
+			setFlagBit flagLetter, newvalue, machineState
 
-	machineState.af = (machineState.af & 0xFF00) + flagValue
 
 pushValue = (value, machineState, memory) ->
 	{ sp } = machineState
@@ -494,6 +509,52 @@ executeCode =
 		if parsed.length is 1 or getFlagCondition operand2, machineState
 			value = popStack machineState, memory
 			machineState.pc = value - numbytes
+
+	# 2nd rla test case input
+	# 		a register = 1000 0001
+	# 		f register = 0001 0010
+	# 		af = 0x8112
+
+	# 2nd rla test case output
+	# 		a register = 0000 0010
+	# 		f register = 0000 0001
+	# 		af = 0x0201
+
+	rla: (machineState, memory, currOpcodeObj) ->
+		areg = readSource 'a', machineState, memory
+		cflag = getFlag 'c', machineState
+		areg = areg << 1
+		areg = areg | cflag
+		setFlags machineState, memory, currOpcodeObj, areg, areg, areg
+		writeDestination 'a', areg, machineState, memory
+
+	rlca: (machineState, memory, currOpcodeObj) ->
+		areg = readSource 'a', machineState, memory
+		bit7 = (areg & 0x80) >> 7
+		areg = (areg << 1) | bit7
+		setFlagBit 'c', bit7, machineState
+
+		setFlags machineState, memory, currOpcodeObj, areg, areg, areg
+		writeDestination 'a', areg, machineState, memory
+
+	rra: (machineState, memory, currOpcodeObj) ->
+		areg = readSource 'a', machineState, memory
+		bit0 = areg & 0x01
+		cflag = getFlag 'c', machineState
+		cflag = cflag << 7
+		areg = (areg >> 1) | cflag
+		# areg = areg | cflag
+		setFlags machineState, memory, currOpcodeObj, areg, areg, areg
+		setFlagBit 'c', bit0, machineState
+		writeDestination 'a', areg, machineState, memory
+
+	rrca: (machineState, memory, currOpcodeObj) ->
+		areg = readSource 'a', machineState, memory
+		bit0 = areg & 0x01d
+		areg = (areg >> 1) | (bit0 << 7)
+		setFlags machineState, memory, currOpcodeObj, areg, areg, areg
+		setFlagBit 'c', bit0, machineState
+		writeDestination 'a', areg, machineState, memory
 
 	rst: (machineState, memory, currOpcodeObj) ->
 		{ parsed, opcode, numbytes } = currOpcodeObj
