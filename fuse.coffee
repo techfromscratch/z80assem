@@ -39,6 +39,7 @@ opcodeToTest = [
 	'rst'
 	'ex'
 	'exx'
+	'djnz'
 ]
 
 for op in opcodeToTest
@@ -62,7 +63,11 @@ for testitem in testinAr
 	opFamily = opObj.parsed[0]
 
 	if u.contains opcodeToTest, opFamily
-		em.runOpcode machineState, memory
+		if opcode is '10'
+			while _.isNumber memory[machineState.pc]
+				em.runOpcode machineState, memory
+		else
+			em.runOpcode machineState, memory
 
 		testoutMachineState = testoutAr[index].machineState
 

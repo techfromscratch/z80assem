@@ -376,6 +376,14 @@ executeCode =
 		machineState.iff1 = 0
 		machineState.iff2 = 0
 
+	djnz: (machineState, memory, currOpcodeObj) ->
+		memval = readSource '$', machineState, memory
+		bval = readSource 'b', machineState, memory
+		bval -= 1
+		if bval > 0
+			machineState.pc += memval
+		writeDestination 'b', bval, machineState, memory
+
 	ei: (machineState, memory, currOpcodeObj) ->
 		machineState.iff1 = 1
 		machineState.iff2 = 1
@@ -519,8 +527,6 @@ executeCode =
 		value3 = readSource operand3, machineState, memory
 		setFlags machineState, memory, currOpcodeObj, value2, value3, value2 ^ value3
 		writeDestination 'a', value2 ^ value3, machineState, memory
-
-
 
 
 runOpcode = (machineState, memory) ->
